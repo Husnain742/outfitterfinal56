@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import ProductSkeleton from "@/components/ProductSkeleton";
-import { Package, Loader2, X, Eye, Heart, SlidersHorizontal, ArrowUpDown } from "lucide-react";
+import { Package, Loader2, X, Eye, Heart, SlidersHorizontal, ArrowUpDown, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { useWishlist } from "@/context/WishlistContext";
@@ -17,7 +17,7 @@ function ProductsContent() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
-  
+
   // Full-screen Image Modal State
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
@@ -27,7 +27,13 @@ function ProductsContent() {
   const [sortBy, setSortBy] = useState("newest");
 
   const searchParams = useSearchParams();
-  const searchQuery = searchParams.get("search") || "";
+  const urlSearchQuery = searchParams.get("search") || "";
+  const [searchTerm, setSearchTerm] = useState(urlSearchQuery);
+
+  // Sync local search input if URL search param changes (e.g., from Navbar)
+  useEffect(() => {
+    setSearchTerm(urlSearchQuery);
+  }, [urlSearchQuery]);
 
   const { wishlist, addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const { convertPrice } = useCurrency();
@@ -81,8 +87,8 @@ function ProductsContent() {
         const originalPrice = Number(product.price);
         const effectivePrice = hasDiscount ? originalPrice - (originalPrice * product.discountPercentage) / 100 : originalPrice;
 
-        if (searchQuery) {
-          const q = searchQuery.toLowerCase();
+        if (searchTerm.trim()) {
+          const q = searchTerm.trim().toLowerCase();
           const matchesSearch =
             product.title?.toLowerCase().includes(q) ||
             product.category?.toLowerCase().includes(q) ||
@@ -111,7 +117,14 @@ function ProductsContent() {
         if (sortBy === "high-low") return getEffectivePrice(b) - getEffectivePrice(a);
         return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
       });
-  }, [products, searchQuery, selectedCategory, maxPrice, sortBy]);
+  }, [products, searchTerm, selectedCategory, maxPrice, sortBy]);
+
+  const handleClearSearch = () => {
+    setSearchTerm("");
+    if (urlSearchQuery) {
+      router.replace("/products", { scroll: false });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#FAF7F5] text-[#2C2420] font-sans">
@@ -122,7 +135,9 @@ function ProductsContent() {
           <div>
             <h1 className="text-3xl font-serif font-bold text-[#1A120E]">Our Products Catalog</h1>
             <p className="text-sm text-[#5E4E46] mt-1">
-              {searchQuery ? `Search results for "${searchQuery}"` : "Explore curated luxury items with advanced filters"}
+              {searchTerm.trim()
+                ? `Showing ${filteredAndSortedProducts.length} result(s) for "${searchTerm.trim()}"`
+                : "Explore curated luxury items with advanced filters"}
             </p>
           </div>
           <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -151,54 +166,83 @@ function ProductsContent() {
           </div>
         </div>
 
-        <div className="bg-[#EFEAE5] border border-[#E5DFDA] rounded-3xl p-5 sm:p-6 mb-8 shadow-sm flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs font-bold text-[#8C5E73] uppercase tracking-wider mr-2 flex items-center gap-1 w-full sm:w-auto mb-1 sm:mb-0">
-              <SlidersHorizontal size={14} /> Categories:
-            </span>
-            {categories.map((cat) => (
+        {/* Filter & Search Card */}
+        <div className="bg-[#EFEAE5] border border-[#E5DFDA] rounded-3xl p-5 sm:p-6 mb-8 shadow-sm flex flex-col gap-5">
+          {/* Responsive Search Input */}
+          <div className="relative w-full">
+            <Search
+              size={18}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8C5E73] pointer-events-none"
+            />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search products by name, category, or description..."
+              className="w-full bg-[#FAF7F5] border border-[#E5DFDA] focus:border-[#8C5E73] focus:ring-2 focus:ring-[#8C5E73]/20 rounded-full pl-11 pr-10 py-3 text-xs sm:text-sm text-[#1A120E] placeholder:text-[#8A7A72] focus:outline-none transition-all shadow-xs"
+            />
+            {searchTerm && (
               <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`text-xs font-semibold px-4 py-2 rounded-full transition-all cursor-pointer border ${
-                  selectedCategory === cat
-                    ? "bg-[#8C5E73] text-white border-[#8C5E73] shadow-sm"
-                    : "bg-[#FAF7F5] text-[#5E4E46] border-[#E5DFDA] hover:border-[#8C5E73]"
-                }`}
+                type="button"
+                onClick={handleClearSearch}
+                aria-label="Clear search"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#8A7A72] hover:text-[#8C5E73] p-1 rounded-full hover:bg-[#EFEAE5] transition-colors cursor-pointer"
               >
-                {cat}
+                <X size={16} />
               </button>
-            ))}
+            )}
           </div>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 w-full lg:w-auto">
-            <div className="flex flex-col gap-1 w-full sm:w-56">
-              <div className="flex justify-between text-xs font-semibold text-[#5E4E46]">
-                <span>Max Price</span>
-                <span className="text-[#8C5E73] font-bold">{convertPrice(maxPrice)}</span>
-              </div>
-              <input
-                type="range"
-                min="500"
-                max={absoluteMaxPrice}
-                step="1000"
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(Number(e.target.value))}
-                className="w-full accent-[#8C5E73] cursor-pointer"
-              />
+          {/* Categories, Max Price & Sort Controls */}
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pt-1 border-t border-[#E5DFDA]/70">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs font-bold text-[#8C5E73] uppercase tracking-wider mr-2 flex items-center gap-1 w-full sm:w-auto mb-1 sm:mb-0">
+                <SlidersHorizontal size={14} /> Categories:
+              </span>
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`text-xs font-semibold px-4 py-2 rounded-full transition-all cursor-pointer border ${
+                    selectedCategory === cat
+                      ? "bg-[#8C5E73] text-white border-[#8C5E73] shadow-sm"
+                      : "bg-[#FAF7F5] text-[#5E4E46] border-[#E5DFDA] hover:border-[#8C5E73]"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
             </div>
 
-            <div className="flex items-center gap-2 w-full sm:w-auto">
-              <ArrowUpDown size={16} className="text-[#8C5E73]" />
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="bg-[#FAF7F5] border border-[#E5DFDA] rounded-full text-xs font-semibold text-[#1A120E] px-4 py-2.5 focus:outline-none focus:border-[#8C5E73] cursor-pointer shadow-sm w-full sm:w-auto"
-              >
-                <option value="newest">Newest First</option>
-                <option value="low-high">Price: Low to High</option>
-                <option value="high-low">Price: High to Low</option>
-              </select>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 w-full lg:w-auto">
+              <div className="flex flex-col gap-1 w-full sm:w-56">
+                <div className="flex justify-between text-xs font-semibold text-[#5E4E46]">
+                  <span>Max Price</span>
+                  <span className="text-[#8C5E73] font-bold">{convertPrice(maxPrice)}</span>
+                </div>
+                <input
+                  type="range"
+                  min="500"
+                  max={absoluteMaxPrice}
+                  step="1000"
+                  value={maxPrice}
+                  onChange={(e) => setMaxPrice(Number(e.target.value))}
+                  className="w-full accent-[#8C5E73] cursor-pointer"
+                />
+              </div>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <ArrowUpDown size={16} className="text-[#8C5E73] shrink-0" />
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="bg-[#FAF7F5] border border-[#E5DFDA] rounded-full text-xs font-semibold text-[#1A120E] px-4 py-2.5 focus:outline-none focus:border-[#8C5E73] cursor-pointer shadow-sm w-full sm:w-auto"
+                >
+                  <option value="newest">Newest First</option>
+                  <option value="low-high">Price: Low to High</option>
+                  <option value="high-low">Price: High to Low</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -210,14 +254,15 @@ function ProductsContent() {
             ))}
           </div>
         ) : filteredAndSortedProducts.length === 0 ? (
-          <div className="text-center py-20 bg-[#EFEAE5] border border-[#E5DFDA] rounded-3xl shadow-sm">
+          <div className="text-center py-20 bg-[#EFEAE5] border border-[#E5DFDA] rounded-3xl shadow-sm px-4">
             <Package className="mx-auto text-[#B5A59E] mb-3" size={48} />
             <h2 className="text-lg font-semibold text-[#1A120E]">No products match your filter</h2>
             <p className="text-xs text-[#5E4E46] mt-1">
-              Try adjusting your price range or clearing category filters.
+              Try adjusting your search keywords, price range, or category filters.
             </p>
             <button
               onClick={() => {
+                handleClearSearch();
                 setSelectedCategory("All");
                 setMaxPrice(absoluteMaxPrice);
                 setSortBy("newest");
@@ -273,7 +318,7 @@ function ProductsContent() {
                     />
                   </button>
 
-                  <div 
+                  <div
                     onClick={() => imageUrl && setSelectedImage(imageUrl)}
                     className="w-full h-52 bg-[#FAF7F5] border-b border-[#E5DFDA] relative overflow-hidden flex items-center justify-center p-4 cursor-pointer group/img"
                   >
@@ -342,7 +387,7 @@ function ProductsContent() {
 
       <AnimatePresence>
         {selectedImage && (
-          <div 
+          <div
             onClick={() => setSelectedImage(null)}
             className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl"
           >
@@ -383,3 +428,9 @@ export default function ProductsPage() {
     </Suspense>
   );
 }
+
+
+// mongodb+srv://khayyan-portal-31:Husnainali123@cluster0.ckog2ug.mongodb.net/
+// cloude_name nb9cimul
+// api_key 784478217321745
+// api_secret 0_D3MfMq7w2YkU8FCU47W5Turag

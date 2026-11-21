@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { Lock, LogIn, Loader2, Mail, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import { toast } from "sonner"; // <-- Sonner toast import kiya
+import { toast } from "sonner";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -88,9 +88,18 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#5E4E46] mb-1.5">
-                Password
-              </label>
+              {/* Password label ke saath Forgot Password link add kiya hai */}
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-xs font-semibold text-[#5E4E46]">
+                  Password
+                </label>
+                <Link
+                  href="/forgot-password"
+                  className="text-xs font-semibold text-[#8C5E73] hover:text-[#784E60] underline underline-offset-4 transition-colors"
+                >
+                  Forgot Password?
+                </Link>
+              </div>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-3.5 text-[#7A6A62]" size={18} />
                 <input
