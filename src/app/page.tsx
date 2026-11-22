@@ -107,7 +107,7 @@ export default function Home() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="relative overflow-hidden pt-2 sm:pt-4 pb-10 lg:pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full"
       >
-        <div className="relative rounded-[1.75rem] sm:rounded-[3rem] overflow-hidden bg-[#EFEAE5] border border-[#E5DFDA] shadow-xl py-8 sm:py-20 px-4 sm:px-16 backdrop-blur-xl">
+        <div className="relative rounded-[1.75rem] sm:rounded-[3rem] overflow-hidden bg-[#EFEAE5] border border-[#E5DFDA] shadow-xl py-8 sm:py-16 px-4 sm:px-12 lg:px-14 backdrop-blur-xl">
 
           <div className="absolute inset-0 z-0">
             {backgroundImages.map((img, index) => (
@@ -123,9 +123,9 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-r from-[#FAF7F5]/95 via-[#FAF7F5]/85 to-[#FAF7F5]/70" />
           </div>
 
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
 
-            <div className="lg:col-span-7 text-center lg:text-left">
+            <div className="lg:col-span-6 text-center lg:text-left">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -194,34 +194,47 @@ export default function Home() {
               </motion.div>
             </div>
 
-            <div className="lg:col-span-5 flex items-center justify-center relative">
-              <div className="relative w-56 h-56 sm:w-96 sm:h-96 flex items-center justify-center">
-                <div className="absolute inset-0 bg-[#8C5E73]/15 rounded-full blur-2xl animate-pulse" />
-                <div className="absolute inset-4 bg-gradient-to-tr from-[#E5DFDA] to-[#FAF7F5] rounded-full border border-[#E5DFDA] shadow-inner" />
+            {/* Soft Rounded Editorial Slideshow Frame Integrated with Hero */}
+            <div className="lg:col-span-6 w-full">
+              <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[430px] rounded-[2rem] overflow-hidden border border-[#E5DFDA] bg-[#FAF7F5]/80 shadow-xl">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={modelImageIndex}
+                    src={heroShoppingModels[modelImageIndex]}
+                    alt="Featured Collection Showcase"
+                    initial={{ opacity: 0.2, scale: 1.04 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0.2, scale: 0.98 }}
+                    transition={{ duration: 0.7, ease: "easeInOut" }}
+                    className="w-full h-full object-cover"
+                  />
+                </AnimatePresence>
 
-                <div className="relative z-10 w-48 h-48 sm:w-84 sm:h-84 rounded-full overflow-hidden border-4 border-white shadow-2xl">
-                  <AnimatePresence mode="wait">
-                    <motion.img
-                      key={modelImageIndex}
-                      src={heroShoppingModels[modelImageIndex]}
-                      alt="Professional Shopping Model"
-                      initial={{ opacity: 0, scale: 1.1 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.8 }}
-                      className="w-full h-full object-cover"
-                    />
-                  </AnimatePresence>
-                </div>
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
 
                 <motion.div
-                  animate={{ y: [0, -8, 0] }}
+                  animate={{ y: [0, -5, 0] }}
                   transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-                  className="absolute bottom-2 right-2 sm:bottom-6 sm:right-6 z-20 bg-white/95 backdrop-blur-md border border-[#E5DFDA] px-4 py-2 rounded-2xl shadow-xl flex items-center space-x-2"
+                  className="absolute bottom-4 left-4 z-20 bg-white/95 backdrop-blur-md border border-[#E5DFDA] px-4 py-2 rounded-2xl shadow-lg flex items-center space-x-2"
                 >
-                  <ShoppingBag size={18} className="text-[#8C5E73]" />
+                  <ShoppingBag size={17} className="text-[#8C5E73]" />
                   <span className="text-xs font-bold text-[#1A120E]">Hot Trend 2026 🔥</span>
                 </motion.div>
+
+                {/* Slide Indicators */}
+                <div className="absolute bottom-4 right-4 z-20 flex items-center gap-1.5 bg-black/25 backdrop-blur-sm px-2.5 py-1.5 rounded-full">
+                  {heroShoppingModels.map((_, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setModelImageIndex(idx)}
+                      aria-label={`Slide ${idx + 1}`}
+                      className={`h-1.5 rounded-full transition-all cursor-pointer ${
+                        idx === modelImageIndex ? "w-5 bg-white" : "w-1.5 bg-white/60 hover:bg-white/85"
+                      }`}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
 
