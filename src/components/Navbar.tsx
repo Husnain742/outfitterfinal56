@@ -33,11 +33,12 @@ export default function Navbar() {
   const { currency, setCurrency } = useCurrency();
   const router = useRouter();
   const pathname = usePathname();
-  const [, forceRender] = useState(0);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  // Date.now() render ke dauran nahi chalta (Next.js error), isliye state mein rakha hai
+  const [nowMs, setNowMs] = useState(0);
   
   const [announcement, setAnnouncement] = useState<{ text: string; couponCode: string; isActive: boolean } | null>(null);
 
@@ -48,6 +49,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setMounted(true);
+    setNowMs(Date.now());
     fetchProducts();
     fetchAnnouncement();
 
@@ -85,8 +87,7 @@ export default function Navbar() {
 
   // ---------- Flash sale banner data (products se khud banta hai) ----------
   const isAdminPage = pathname?.startsWith("/admin");
-  const nowMs = Date.now();
- const activeSaleProducts = allProducts.filter(
+  const activeSaleProducts = allProducts.filter(
     (p) =>
       Number(p.discountPercentage) > 0 &&
       p.saleEndDate &&
@@ -96,12 +97,10 @@ export default function Navbar() {
     (max, p) => Math.max(max, Number(p.discountPercentage)),
     0
   );
-  const saleEndTimes = activeSaleProducts
-    .filter((p) => p.saleEndDate)
-    .map((p) => new Date(p.saleEndDate).getTime());
+  const saleEndTimes = activeSaleProducts.map((p) => new Date(p.saleEndDate).getTime());
   const saleEndDate =
     saleEndTimes.length > 0 ? new Date(Math.min(...saleEndTimes)).toISOString() : null;
-  const showSaleBanner = !isAdminPage && activeSaleProducts.length > 0;
+  const showSaleBanner = !isAdminPage && nowMs > 0 && activeSaleProducts.length > 0;
 
   const filteredProducts = searchQuery.trim() === "" ? [] : allProducts.filter((product) =>
     product.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -128,7 +127,7 @@ export default function Navbar() {
               <FlashSaleTimer
                 endDate={saleEndDate}
                 variant="banner"
-                onExpire={() => forceRender((n) => n + 1)}
+                onExpire={() => setNowMs(Date.now())}
               />
             )}
 

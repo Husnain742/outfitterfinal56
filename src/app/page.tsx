@@ -46,6 +46,8 @@ export default function Home() {
   const [currentTime, setCurrentTime] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [mounted, setMounted] = useState(false);
+  // Date.now() render ke dauran nahi chalta (Next.js error), isliye state mein rakha hai
+  const [nowMs, setNowMs] = useState(0);
 
   const { wishlist, addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const { convertPrice } = useCurrency();
@@ -70,6 +72,7 @@ export default function Home() {
     const updateClock = () => {
       const now = new Date();
       setCurrentTime(now.toLocaleTimeString());
+      setNowMs(Date.now());
     };
     updateClock();
     const clockTimer = setInterval(updateClock, 1000);
@@ -98,10 +101,10 @@ export default function Home() {
   );
 
   // ---------- Flash Deals: jin products par sale abhi chal rahi hai ----------
-  const nowMs = Date.now();
   const flashDeals = products
     .filter(
       (p) =>
+        nowMs > 0 &&
         Number(p.discountPercentage) > 0 &&
         p.saleEndDate &&
         new Date(p.saleEndDate).getTime() > nowMs
@@ -415,7 +418,7 @@ export default function Home() {
               const imageUrl = product.image || (Array.isArray(product.images) && product.images[0]) || null;
               const isFav = mounted && isInWishlist(product._id);
 
-              const isSaleActive = product.saleEndDate ? new Date().getTime() < new Date(product.saleEndDate).getTime() : false;
+              const isSaleActive = product.saleEndDate ? nowMs > 0 && nowMs < new Date(product.saleEndDate).getTime() : false;
               const hasDiscount = Boolean(product.discountPercentage && product.discountPercentage > 0 && isSaleActive);
               const originalPrice = Number(product.price);
               const discountPercent = product.discountPercentage || 0;
