@@ -140,7 +140,7 @@ export default function Navbar() {
                 <ShoppingCart size={20} />
               </motion.div>
               <span className="text-xl sm:text-2xl font-serif tracking-wide text-[#2C2420] group-hover:text-[#8C5E73] transition-colors">
-                Lumière
+                Outfitters
               </span>
             </Link>
 
