@@ -393,7 +393,7 @@ export default function AdminDashboard() {
         h1{margin:0;color:#8C5E73}
         .total{text-align:right;font-size:20px;font-weight:bold;margin-top:20px}
       </style></head><body>
-      <h1>Lumière</h1>
+      <h1>Outfitters</h1>
       <p>Invoice #${escapeHtml(order._id.slice(-6).toUpperCase())} | ${getOrderDate(order).toLocaleDateString()}</p>
       <p><strong>${escapeHtml(c.fullName)}</strong><br/>${escapeHtml(c.phone)}<br/>${escapeHtml(c.email)}<br/>${escapeHtml(c.address)}, ${escapeHtml(c.city)}</p>
       <table><thead><tr><th>Item</th><th style="text-align:center">Qty</th><th style="text-align:right">Price</th><th style="text-align:right">Total</th></tr></thead><tbody>${rows}</tbody></table>
@@ -639,7 +639,7 @@ export default function AdminDashboard() {
               <div className="p-2.5 bg-[#8C5E73] rounded-2xl text-white shadow-md">
                 <Store size={22} />
               </div>
-              <span className="font-serif text-xl font-bold tracking-wide text-white">Lumière</span>
+              <span className="font-serif text-xl font-bold tracking-wide text-white">Outfitters</span>
             </div>
 
             <nav className="space-y-2">
@@ -1291,7 +1291,7 @@ export default function AdminDashboard() {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                   <h2 className="text-xl font-serif font-bold text-[#1A120E]">Customers ({allCustomers.length})</h2>
-                  <p className="text-xs text-[#5E4E46] mt-0.5">Buyers who have ordered on Lumière, with their order count and total spending.</p>
+                  <p className="text-xs text-[#5E4E46] mt-0.5">Buyers who have ordered on Outfitters, with their order count and total spending.</p>
                 </div>
                 <input type="text" placeholder="Search name, email, phone..." value={customerSearch} onChange={(e) => setCustomerSearch(e.target.value)} className="w-full sm:w-64 bg-[#FAF7F5] border border-[#E5DFDA] rounded-2xl py-2.5 px-4 text-xs font-medium text-[#1A120E]" />
               </div>

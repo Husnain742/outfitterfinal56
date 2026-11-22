@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductSkeleton from "@/components/ProductSkeleton";
+import FlashSaleTimer from "@/components/FlashSaleTimer";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Sparkles, ShoppingBag, Eye, Clock, Search, X, Heart, ShieldCheck, Truck, Zap } from "lucide-react";
 import Link from "next/link";
@@ -95,6 +96,20 @@ export default function Home() {
     product.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     product.category?.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // ---------- Flash Deals: jin products par sale abhi chal rahi hai ----------
+  const nowMs = Date.now();
+  const flashDeals = products
+    .filter(
+      (p) =>
+        Number(p.discountPercentage) > 0 &&
+        p.saleEndDate &&
+        new Date(p.saleEndDate).getTime() > nowMs
+    )
+    .sort((a, b) => Number(b.discountPercentage) - Number(a.discountPercentage));
+  const flashEndTimes = flashDeals.map((p) => new Date(p.saleEndDate).getTime());
+  const flashEndDate =
+    flashEndTimes.length > 0 ? new Date(Math.min(...flashEndTimes)).toISOString() : null;
 
   return (
     <div className="min-h-screen bg-[#FAF7F5] text-[#2C2420] flex flex-col font-sans overflow-x-clip">
@@ -209,7 +224,6 @@ export default function Home() {
                     className="w-full h-full object-cover"
                   />
                 </AnimatePresence>
-
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
 
                 <motion.div
@@ -279,6 +293,62 @@ export default function Home() {
 
         </div>
       </motion.section>
+
+      {/* Flash Deals Section (sirf tab dikhta hai jab koi sale chal rahi ho) */}
+      {!loading && flashDeals.length > 0 && (
+        <section id="flash-deals" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div
+            className="rounded-[1.75rem] sm:rounded-[2.5rem] p-5 sm:p-8 text-white shadow-xl"
+            style={{ background: "linear-gradient(135deg, #2A1424 0%, #542B49 100%)" }}
+          >
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-amber-300 text-[#2A1424] rounded-2xl shadow-md">
+                  <Zap size={22} className="fill-[#2A1424]" />
+                </div>
+                <div>
+                  <h2 className="text-xl sm:text-3xl font-serif font-bold">Flash Deals</h2>
+                  <p className="text-xs sm:text-sm text-[#D9C4CF]">Limited time offers, jaldi karein!</p>
+                </div>
+              </div>
+              {flashEndDate && <FlashSaleTimer endDate={flashEndDate} variant="banner" />}
+            </div>
+
+            <div className="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory -mx-1 px-1">
+              {flashDeals.map((product) => {
+                const dealImage = product.image || (Array.isArray(product.images) && product.images[0]) || null;
+                const dealPercent = Number(product.discountPercentage);
+                const dealOriginal = Number(product.price);
+                const dealPrice = dealOriginal - (dealOriginal * dealPercent) / 100;
+
+                return (
+                  <Link
+                    key={product._id}
+                    href={`/products/${product._id}`}
+                    className="snap-start shrink-0 w-44 sm:w-56 bg-[#EFEAE5] text-[#1A120E] rounded-3xl p-3 hover:-translate-y-1 hover:shadow-2xl transition-all relative"
+                  >
+                    <span className="absolute top-5 left-5 z-10 bg-rose-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md">
+                      -{dealPercent}%
+                    </span>
+                    <div className="w-full h-36 sm:h-44 bg-[#FAF7F5] border border-[#E5DFDA] rounded-2xl overflow-hidden flex items-center justify-center p-2 mb-3">
+                      {dealImage ? (
+                        <img src={dealImage} alt={product.title} className="w-full h-full object-contain" />
+                      ) : (
+                        <span className="text-xs text-[#8A7A72]">No Image</span>
+                      )}
+                    </div>
+                    <h3 className="text-sm font-bold line-clamp-1">{product.title}</h3>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="font-serif font-extrabold text-sm">{convertPrice(dealPrice)}</span>
+                      <span className="text-[11px] text-[#8A7A72] line-through font-serif">{convertPrice(dealOriginal)}</span>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Trending Products Section */}
       <motion.section

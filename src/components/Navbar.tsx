@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -17,11 +17,13 @@ import {
   ArrowRight,
   Sparkles,
   Tag,
-  Percent
+  Percent,
+  Zap
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import axios from "axios";
+import FlashSaleTimer from "@/components/FlashSaleTimer";
 
 const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || "husnaingill565656@gmail.com";
 
@@ -30,6 +32,8 @@ export default function Navbar() {
   const { cart, showCartReminder, setShowCartReminder } = useCart();
   const { currency, setCurrency } = useCurrency();
   const router = useRouter();
+  const pathname = usePathname();
+  const [, forceRender] = useState(0);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
@@ -79,6 +83,26 @@ export default function Navbar() {
   const totalItemsCount = cart.reduce((total: number, item: any) => total + item.quantity, 0);
   const isAdmin = session?.user?.email === ADMIN_EMAIL;
 
+  // ---------- Flash sale banner data (products se khud banta hai) ----------
+  const isAdminPage = pathname?.startsWith("/admin");
+  const nowMs = Date.now();
+ const activeSaleProducts = allProducts.filter(
+    (p) =>
+      Number(p.discountPercentage) > 0 &&
+      p.saleEndDate &&
+      new Date(p.saleEndDate).getTime() > nowMs
+  );
+  const maxDiscount = activeSaleProducts.reduce(
+    (max, p) => Math.max(max, Number(p.discountPercentage)),
+    0
+  );
+  const saleEndTimes = activeSaleProducts
+    .filter((p) => p.saleEndDate)
+    .map((p) => new Date(p.saleEndDate).getTime());
+  const saleEndDate =
+    saleEndTimes.length > 0 ? new Date(Math.min(...saleEndTimes)).toISOString() : null;
+  const showSaleBanner = !isAdminPage && activeSaleProducts.length > 0;
+
   const filteredProducts = searchQuery.trim() === "" ? [] : allProducts.filter((product) =>
     product.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     product.category?.toLowerCase().includes(searchQuery.toLowerCase())
@@ -86,6 +110,38 @@ export default function Navbar() {
 
   return (
     <>
+      {/* Flash Sale Banner (scroll par upar chali jati hai, navbar sticky rehta hai) */}
+      {mounted && showSaleBanner && (
+        <div
+          className="relative overflow-hidden text-white"
+          style={{ background: "linear-gradient(90deg, #2A1424 0%, #542B49 50%, #2A1424 100%)" }}
+        >
+          <div className="relative max-w-7xl mx-auto px-3 sm:px-6 py-3 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-center">
+            <div className="flex items-center gap-2">
+              <Zap className="w-5 h-5 text-amber-300 fill-amber-300 animate-pulse shrink-0" />
+              <span className="font-serif font-bold text-sm sm:text-lg tracking-wide">
+                FLASH SALE <span className="text-amber-300">· Up to {maxDiscount}% OFF</span>
+              </span>
+            </div>
+
+            {saleEndDate && (
+              <FlashSaleTimer
+                endDate={saleEndDate}
+                variant="banner"
+                onExpire={() => forceRender((n) => n + 1)}
+              />
+            )}
+
+            <Link
+              href="/products"
+              className="bg-amber-300 hover:bg-amber-200 text-[#2A1424] font-extrabold text-xs sm:text-sm px-5 py-2 rounded-full shadow-md transition-colors whitespace-nowrap"
+            >
+              Shop Now →
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* Sticky navbar + animated announcement bar */}
       <nav className="sticky top-0 left-0 w-full z-50 bg-[#FAF7F5]/95 backdrop-blur-md border-b border-[#E5DFDA] shadow-sm transition-all duration-300">
         
@@ -309,7 +365,6 @@ export default function Navbar() {
                               <LayoutDashboard size={16} />
                               <span>Admin Dashboard</span>
                             </Link>
-
                             <Link
                               href="/admin/add-product"
                               onClick={() => setUserDropdownOpen(false)}
