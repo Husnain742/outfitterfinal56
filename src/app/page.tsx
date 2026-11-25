@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductSkeleton from "@/components/ProductSkeleton";
 import FlashSaleTimer from "@/components/FlashSaleTimer";
+import ProductCardImageSlider from "@/components/ProductCardImageSlider";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Sparkles, ShoppingBag, Eye, Clock, Search, X, Heart, ShieldCheck, Truck, Zap } from "lucide-react";
 import Link from "next/link";
@@ -35,6 +36,21 @@ const heroShoppingModels = [
   "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1000&auto=format&fit=crop",
   "https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?q=80&w=1000&auto=format&fit=crop"
 ];
+
+function getProductGallery(product: any): string[] {
+  const list: string[] = [];
+  if (Array.isArray(product?.images)) {
+    for (const img of product.images) {
+      if (typeof img === "string" && img.trim() && !list.includes(img.trim())) {
+        list.push(img.trim());
+      }
+    }
+  }
+  if (typeof product?.image === "string" && product.image.trim() && !list.includes(product.image.trim())) {
+    list.unshift(product.image.trim());
+  }
+  return list;
+}
 
 export default function Home() {
   const router = useRouter();
@@ -95,24 +111,35 @@ export default function Home() {
     }
   };
 
-  const filteredProducts = products.filter((product) =>
-    product.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    product.category?.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredProducts = useMemo(
+    () =>
+      products.filter(
+        (product) =>
+          product.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          product.category?.toLowerCase().includes(searchQuery.toLowerCase())
+      ),
+    [products, searchQuery]
   );
 
   // ---------- Flash Deals: jin products par sale abhi chal rahi hai ----------
-  const flashDeals = products
-    .filter(
-      (p) =>
-        nowMs > 0 &&
-        Number(p.discountPercentage) > 0 &&
-        p.saleEndDate &&
-        new Date(p.saleEndDate).getTime() > nowMs
-    )
-    .sort((a, b) => Number(b.discountPercentage) - Number(a.discountPercentage));
-  const flashEndTimes = flashDeals.map((p) => new Date(p.saleEndDate).getTime());
-  const flashEndDate =
-    flashEndTimes.length > 0 ? new Date(Math.min(...flashEndTimes)).toISOString() : null;
+  const flashDeals = useMemo(
+    () =>
+      products
+        .filter(
+          (p) =>
+            nowMs > 0 &&
+            Number(p.discountPercentage) > 0 &&
+            p.saleEndDate &&
+            new Date(p.saleEndDate).getTime() > nowMs
+        )
+        .sort((a, b) => Number(b.discountPercentage) - Number(a.discountPercentage)),
+    [products, nowMs]
+  );
+
+  const flashEndDate = useMemo(() => {
+    const flashEndTimes = flashDeals.map((p) => new Date(p.saleEndDate).getTime());
+    return flashEndTimes.length > 0 ? new Date(Math.min(...flashEndTimes)).toISOString() : null;
+  }, [flashDeals]);
 
   return (
     <div className="min-h-screen bg-[#FAF7F5] text-[#2C2420] flex flex-col font-sans overflow-x-clip">
@@ -318,8 +345,8 @@ export default function Home() {
             </div>
 
             <div className="flex gap-4 overflow-x-auto pb-3 snap-x snap-mandatory -mx-1 px-1">
-              {flashDeals.map((product) => {
-                const dealImage = product.image || (Array.isArray(product.images) && product.images[0]) || null;
+              {flashDeals.map((product, idx) => {
+                const dealGallery = getProductGallery(product);
                 const dealPercent = Number(product.discountPercentage);
                 const dealOriginal = Number(product.price);
                 const dealPrice = dealOriginal - (dealOriginal * dealPercent) / 100;
@@ -334,8 +361,13 @@ export default function Home() {
                       -{dealPercent}%
                     </span>
                     <div className="w-full h-36 sm:h-44 bg-[#FAF7F5] border border-[#E5DFDA] rounded-2xl overflow-hidden flex items-center justify-center p-2 mb-3">
-                      {dealImage ? (
-                        <img src={dealImage} alt={product.title} className="w-full h-full object-contain" />
+                      {dealGallery.length > 0 ? (
+                        <ProductCardImageSlider
+                          images={dealGallery}
+                          title={product.title}
+                          intervalMs={2600}
+                          staggerDelayMs={(idx % 4) * 650}
+                        />
                       ) : (
                         <span className="text-xs text-[#8A7A72]">No Image</span>
                       )}
@@ -415,7 +447,8 @@ export default function Home() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {filteredProducts.map((product, index) => {
-              const imageUrl = product.image || (Array.isArray(product.images) && product.images[0]) || null;
+              const gallery = getProductGallery(product);
+              const primaryImageUrl = gallery[0] || null;
               const isFav = mounted && isInWishlist(product._id);
 
               const isSaleActive = product.saleEndDate ? nowMs > 0 && nowMs < new Date(product.saleEndDate).getTime() : false;
@@ -460,13 +493,18 @@ export default function Home() {
 
                   <div>
                     <div
-                      onClick={() => imageUrl && setSelectedImage(imageUrl)}
+                      onClick={() => primaryImageUrl && setSelectedImage(primaryImageUrl)}
                       className="w-full h-56 bg-[#FAF7F5] border border-[#E5DFDA] rounded-2xl overflow-hidden mb-4 flex items-center justify-center p-3 relative cursor-pointer group/img"
                     >
-                      {imageUrl ? (
+                      {gallery.length > 0 ? (
                         <>
-                          <img src={imageUrl} alt={product.title} className="w-full h-full object-contain group-hover/img:scale-105 transition-transform duration-300" />
-                          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                          <ProductCardImageSlider
+                            images={gallery}
+                            title={product.title}
+                            intervalMs={2600}
+                            staggerDelayMs={(index % 4) * 650}
+                          />
+                          <div className="pointer-events-none absolute inset-0 bg-black/20 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
                             <span className="bg-[#8C5E73] text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow-lg flex items-center space-x-1">
                               <Eye size={14} />
                               <span>Click to Zoom</span>
@@ -476,7 +514,7 @@ export default function Home() {
                       ) : (
                         <span className="text-xs text-[#8A7A72]">No Image</span>
                       )}
-                      <span className="absolute top-3 left-3 bg-[#EFEAE5]/90 backdrop-blur-md border border-[#E5DFDA] text-[#8C5E73] text-[10px] font-bold px-3 py-1 rounded-full">
+                      <span className="absolute top-3 left-3 z-10 bg-[#EFEAE5]/90 backdrop-blur-md border border-[#E5DFDA] text-[#8C5E73] text-[10px] font-bold px-3 py-1 rounded-full">
                         {product.category || "General"}
                       </span>
 

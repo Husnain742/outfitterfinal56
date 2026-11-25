@@ -171,7 +171,7 @@ export async function POST(req: Request) {
     if (safeCustomer.phone) {
       const orderShortId = newOrder._id.toString().slice(-6).toUpperCase();
       const paymentText = isCard ? "Paid via Card" : "Cash on Delivery";
-      const message = `Hello ${safeCustomer.fullName}! ✨ Aapka Lumière store par order #${orderShortId} (${paymentText}) successfully place ho gaya hai. Total Amount: Rs. ${finalTotalAmount.toLocaleString()}. Shukriya!`;
+      const message = `Hello ${safeCustomer.fullName}! ✨ Aapka Outfitters store par order #${orderShortId} (${paymentText}) successfully place ho gaya hai. Total Amount: Rs. ${finalTotalAmount.toLocaleString()}. Shukriya!`;
       sendWhatsAppNotification(safeCustomer.phone, message).catch((err) =>
         console.error("Background WhatsApp Error:", err)
       );
@@ -269,7 +269,7 @@ export async function PATCH(req: Request) {
     const customerPhone = updatedOrder?.customerDetails?.phone;
     if (customerPhone) {
       const orderShortId = updatedOrder._id.toString().slice(-6).toUpperCase();
-      const message = `Hello ${updatedOrder.customerDetails?.fullName || "Customer"}! 📦 Aapka Lumière store ka order #${orderShortId} ka status update ho kar *${status}* ho gaya hai. Shukriya! ✨`;
+      const message = `Hello ${updatedOrder.customerDetails?.fullName || "Customer"}! 📦 Aapka Outfitters store ka order #${orderShortId} ka status update ho kar *${status}* ho gaya hai. Shukriya! ✨`;
       sendWhatsAppNotification(customerPhone, message).catch((err) =>
         console.error("Background Status WhatsApp Error:", err)
       );

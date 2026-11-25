@@ -6,11 +6,13 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Navbar from "@/components/Navbar";
 import dynamic from "next/dynamic";
-import { PackagePlus, UploadCloud, DollarSign, Loader2, Percent, Trash2, Ruler, CheckCircle2 } from "lucide-react";
+import { PackagePlus, UploadCloud, DollarSign, Loader2, Percent, Trash2, Ruler } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
 
 const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
 const CldUploadWidget = dynamic(
   () => import("next-cloudinary").then((mod) => mod.CldUploadWidget),
@@ -27,7 +29,7 @@ export default function AddProductPage() {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("Electronics");
-  
+
   // Images Gallery State
   const [imagesList, setImagesList] = useState<string[]>([]);
   const [stock, setStock] = useState("10");
@@ -102,8 +104,7 @@ export default function AddProductPage() {
       }
 
       toast.success("Product published successfully with custom sizes! 🎉");
-      
-      // Instant State Reset without needing a full page refresh
+
       setTitle("");
       setDescription("");
       setPrice("");
@@ -111,8 +112,7 @@ export default function AddProductPage() {
       setImagesList([]);
       setDiscountPercentage("");
       setSaleEndDate("");
-      
-      // Next.js router refresh taake background data sync ho jaye agar zaroorat ho
+
       router.refresh();
     } catch (err: any) {
       console.error("❌ [ADD PRODUCT ERROR]:", err);
@@ -234,7 +234,7 @@ export default function AddProductPage() {
                 </span>
                 <span className="text-[11px] text-[#8A7A72]">Leave blank for regular price</span>
               </div>
-              
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold text-[#5E4E46] mb-1">
@@ -297,25 +297,42 @@ export default function AddProductPage() {
 
               {/* Cloudinary Upload Widget */}
               <CldUploadWidget
-                uploadPreset={process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}
+                uploadPreset={UPLOAD_PRESET}
+                options={{
+                  cloudName: CLOUD_NAME,
+                  multiple: true,
+                  sources: ["local", "camera"],
+                }}
                 onSuccess={(result: any) => {
-                  if (result?.info?.secure_url) {
-                    setImagesList((prev) => [...prev, result.info.secure_url]);
+                  const secureUrl = result?.info?.secure_url;
+                  if (secureUrl) {
+                    setImagesList((prev) => [...prev, secureUrl]);
                     toast.success("Image uploaded to gallery! 📸");
                   }
                 }}
+                onError={(err: any) => {
+                  console.error("❌ [CLOUDINARY UPLOAD ERROR]:", err);
+                  toast.error("Cloudinary upload popup/widget error! Check preset & cloud name.");
+                }}
               >
-                {({ open }) => (
+                {({ open, isLoading }) => (
                   <button
                     type="button"
-                    onClick={() => open()}
-                    className="w-full border-2 border-dashed border-[#E5DFDA] hover:border-[#8C5E73] bg-[#FAF7F5] p-6 rounded-2xl flex flex-col items-center justify-center space-y-2 transition-all cursor-pointer group"
+                    disabled={isLoading}
+                    onClick={() => {
+                      if (!UPLOAD_PRESET || !CLOUD_NAME) {
+                        toast.error("Cloudinary env variables missing! Check .env.local or Vercel.");
+                        return;
+                      }
+                      open?.();
+                    }}
+                    className="w-full border-2 border-dashed border-[#E5DFDA] hover:border-[#8C5E73] bg-[#FAF7F5] p-6 rounded-2xl flex flex-col items-center justify-center space-y-2 transition-all cursor-pointer group disabled:opacity-60"
                   >
                     <div className="p-3 bg-[#F7EBEF] rounded-2xl text-[#8C5E73] group-hover:scale-110 transition-transform">
-                      <UploadCloud size={24} />
+                      {isLoading ? <Loader2 className="animate-spin" size={24} /> : <UploadCloud size={24} />}
                     </div>
                     <span className="text-xs sm:text-sm font-semibold text-[#1A120E] group-hover:text-[#8C5E73] transition-colors">
-                      + Click to add another angle / color image
+                      {isLoading ? "Loading uploader..." : "+ Click to add another angle / color image"}
                     </span>
                     <span className="text-[10px] text-[#8A7A72] font-medium">You can upload multiple photos</span>
                   </button>

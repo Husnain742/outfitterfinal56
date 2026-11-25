@@ -213,7 +213,7 @@ export default function CheckoutPage() {
               {formData.paymentMethod === "card" ? "Payment Verified & Order Placed!" : "Order Placed Successfully!"}
             </h2>
             <p className="text-xs sm:text-sm text-[#5E4E46] mb-6">
-              Thank you for shopping with Lumière. Your order is confirmed and being prepared for dispatch.
+              Thank you for shopping with Outfitters. Your order is confirmed and being prepared for dispatch.
             </p>
             <Link
               href="/products"
