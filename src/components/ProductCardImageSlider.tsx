@@ -53,7 +53,7 @@ export default function ProductCardImageSlider({
 
   return (
     <div
-      className="relative w-full h-full overflow-hidden"
+      className="relative w-full h-full overflow-hidden flex items-center justify-center"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -62,11 +62,11 @@ export default function ProductCardImageSlider({
           key={validImages[activeIndex]}
           src={validImages[activeIndex]}
           alt={`${title} - view ${activeIndex + 1}`}
-          initial={{ opacity: 0.35, scale: 1.02 }}
+          initial={{ opacity: 0.35, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0.35 }}
           transition={{ duration: 0.45, ease: "easeOut" }}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
         />
       </AnimatePresence>
 

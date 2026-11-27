@@ -62,6 +62,7 @@ export default function Home() {
   const [currentTime, setCurrentTime] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [mounted, setMounted] = useState(false);
+  // Date.now() render ke dauran nahi chalta (Next.js error), isliye state mein rakha hai
   const [nowMs, setNowMs] = useState(0);
 
   const { wishlist, addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
@@ -120,6 +121,7 @@ export default function Home() {
     [products, searchQuery]
   );
 
+  // ---------- Flash Deals: jin products par sale abhi chal rahi hai ----------
   const flashDeals = useMemo(
     () =>
       products
@@ -237,6 +239,7 @@ export default function Home() {
               </motion.div>
             </div>
 
+            {/* Soft Rounded Editorial Slideshow Frame Integrated with Hero */}
             <div className="lg:col-span-6 w-full">
               <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[430px] rounded-[2rem] overflow-hidden border border-line bg-canvas/80 shadow-xl">
                 <AnimatePresence mode="wait">
@@ -262,6 +265,7 @@ export default function Home() {
                   <span className="text-xs font-bold text-ink">Hot Trend 2026 🔥</span>
                 </motion.div>
 
+                {/* Slide Indicators */}
                 <div className="absolute bottom-4 right-4 z-20 flex items-center gap-1.5 bg-black/25 backdrop-blur-sm px-2.5 py-1.5 rounded-full">
                   {heroShoppingModels.map((_, idx) => (
                     <button
@@ -320,7 +324,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Flash Deals Section */}
+      {/* Flash Deals Section (sirf tab dikhta hai jab koi sale chal rahi ho) */}
       {!loading && flashDeals.length > 0 && (
         <section id="flash-deals" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div
