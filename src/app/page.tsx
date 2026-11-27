@@ -179,7 +179,7 @@ export default function Home() {
               >
                 <div className="inline-flex items-center space-x-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-pop/15 border border-brand/30 text-brand text-[11px] sm:text-sm font-semibold shadow-sm">
                   <Sparkles size={15} className="animate-spin" />
-                  <span>Lumière Luxury Collection 2026</span>
+                  <span>Outfitters Luxury Collection 2026</span>
                 </div>
 
                 <div className="inline-flex items-center space-x-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 text-[11px] sm:text-sm font-bold shadow-sm">

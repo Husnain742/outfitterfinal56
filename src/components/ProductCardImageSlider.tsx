@@ -7,12 +7,14 @@ interface ProductCardImageSliderProps {
   images: string[];
   title: string;
   intervalMs?: number;
+  staggerDelayMs?: number;
 }
 
 export default function ProductCardImageSlider({
   images,
   title,
   intervalMs = 2800,
+  staggerDelayMs = 0,
 }: ProductCardImageSliderProps) {
   const validImages = Array.isArray(images) ? images.filter(Boolean) : [];
   const [activeIndex, setActiveIndex] = useState(0);
@@ -25,12 +27,21 @@ export default function ProductCardImageSlider({
   useEffect(() => {
     if (validImages.length <= 1 || isPaused) return;
 
-    const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % validImages.length);
-    }, intervalMs);
+    let intervalId: ReturnType<typeof setInterval> | undefined;
+    const startDelay = Math.max(0, staggerDelayMs);
 
-    return () => clearInterval(timer);
-  }, [validImages.length, isPaused, intervalMs]);
+    const timeoutId = setTimeout(() => {
+      setActiveIndex((prev) => (prev + 1) % validImages.length);
+      intervalId = setInterval(() => {
+        setActiveIndex((prev) => (prev + 1) % validImages.length);
+      }, intervalMs);
+    }, startDelay);
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [validImages.length, isPaused, intervalMs, staggerDelayMs]);
 
   if (validImages.length === 0) {
     return (
