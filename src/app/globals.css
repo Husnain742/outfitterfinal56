@@ -3,24 +3,97 @@
 /* dark: ab sirf tab chalega jab <html class="dark"> ho — OS/browser dark mode se nahi */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* =====================================================================
+   2027 THEME — Palette #3: Pop Pink + Deep Oxblood (Fashion / Beauty / Drops)
+   60-30-10 rule:
+     60%  neutral  -> --canvas (page), --surface-soft
+     30%  surfaces -> --surface (cards/footer), --brand-deep (dark panels)
+     10%  action   -> --brand (CTA/nav), --pop (promo + sale badges)
+   WCAG AA (ratios on #FDF8F9 unless stated):
+     ink 16.2 | ink-soft 7.8 | ink-mute 5.5 | brand 12.2 | brand-hover 9.4
+     white on brand 12.8 | ink on pop 5.5 (pop pe white USE NAHI karna: 3.1)
+   ===================================================================== */
 :root {
-  --background: #FAF7F5;
-  --surface: #EFEAE5;
-  --border: #E5DFDA;
-  --foreground: #2C2420;
+  /* ---- Core palette (exact brief hex) ---- */
+  --pop:            #F25CA2; /* Pop Pink — promo banners, sale badges, highlights */
+  --brand:          #5C1A2B; /* Deep Burgundy — primary CTA / navigation */
+  --canvas:         #FDF8F9; /* Soft Blush Cream — page background */
+  --ink:            #24191C; /* Espresso Charcoal — body text */
+
+  /* ---- Neutrals derived from the palette ---- */
+  --surface:        #F8E9EE; /* cards, footer, inputs (30%) */
+  --surface-soft:   #FBF0F4; /* gentle tint blocks */
+  --line:           #EBDADF; /* subtle borders / dividers */
+  --line-strong:    #D9C0C8; /* hover borders, disabled steps */
+  --ink-soft:       #5E4A50; /* secondary text */
+  --ink-mute:       #7A5F68; /* placeholders, captions (AA 5.5:1) */
+  --ink-faint:      #B8A3AA; /* decorative icons only, never text */
+
+  /* ---- Interactive states ---- */
+  --brand-hover:    #7A2339; /* CTA hover (white text 9.9:1) */
+  --brand-active:   #451320; /* CTA pressed */
+  --brand-deep:     #3A0F1B; /* dark panels: flash banner, admin sidebar */
+  --brand-deep-line:#5A2234; /* borders on dark panels */
+  --pop-hover:      #FF7DB8; /* pop hover (ink text 7.2:1) */
+  --pop-soft:       #FFB3D4; /* pop accents on dark bg (10:1 on deep) */
+  --on-pop:         #24191C; /* text/icons placed ON pop pink */
+  --on-brand:       #FFFFFF; /* text/icons placed ON burgundy */
+  --on-dark-soft:   #F2D3DD; /* secondary text on dark panels */
+  --on-dark-mute:   #D9A9BB; /* tertiary text on dark panels */
+
+  /* ---- Sale / discount ---- */
+  --sale-bg:        var(--pop);
+  --sale-text:      var(--on-pop);
+  --sale-price:     #B0124F; /* discounted price text (6.6:1 on canvas) */
+  --sale-strike:    var(--ink-mute); /* old price, line-through */
+
+  /* ---- Focus + elevation ---- */
+  --focus-ring:     rgba(242, 92, 162, 0.55);
+  --shadow-card:    0 1px 2px rgba(36, 25, 28, 0.06), 0 8px 24px rgba(92, 26, 43, 0.08);
+  --shadow-card-hover: 0 2px 4px rgba(36, 25, 28, 0.08), 0 16px 36px rgba(92, 26, 43, 0.16);
+
+  /* ---- Legacy aliases (purane code ke liye) ---- */
+  --background: var(--canvas);
+  --foreground: var(--ink);
+  --border: var(--line);
+
   /* Browser/OS (aur Chrome/Samsung force-dark) ko batata hai: sirf light theme */
   color-scheme: only light;
 }
 
+/* Tailwind tokens -> bg-canvas, text-ink, border-line, bg-brand, bg-pop ... (single source: :root) */
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-mute: var(--ink-mute);
+  --color-ink-faint: var(--ink-faint);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-active: var(--brand-active);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-deep-line: var(--brand-deep-line);
+  --color-pop: var(--pop);
+  --color-pop-hover: var(--pop-hover);
+  --color-pop-soft: var(--pop-soft);
+  --color-on-dark-soft: var(--on-dark-soft);
+  --color-on-dark-mute: var(--on-dark-mute);
+  --color-sale: var(--sale-price);
+}
+
 html {
-  background-color: var(--background);
+  background-color: var(--canvas);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: var(--canvas);
+  color: var(--ink);
   min-height: 100vh;
   min-height: 100dvh;
   /* clip (hidden nahi) taake sticky navbar kaam karta rahe */
@@ -29,4 +102,15 @@ body {
 
 img, video, svg {
   max-width: 100%;
+}
+
+/* Keyboard users ke liye clear pink focus ring (WCAG 2.4.7) */
+:focus-visible {
+  outline: 2px solid var(--pop);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--pop-soft);
+  color: var(--ink);
 }

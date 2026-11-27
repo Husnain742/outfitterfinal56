@@ -82,21 +82,21 @@ export default function MyOrdersPage() {
 
   if (status === "loading" || loading) {
     return (
-      <div className="min-h-screen bg-[#FAF7F5] flex items-center justify-center">
-        <Loader2 className="animate-spin text-[#8C5E73]" size={40} />
+      <div className="min-h-screen bg-canvas flex items-center justify-center">
+        <Loader2 className="animate-spin text-brand" size={40} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF7F5] text-[#2C2420] font-sans flex flex-col">
+    <div className="min-h-screen bg-canvas text-ink font-sans flex flex-col">
       <Navbar />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-12 flex-grow w-full space-y-6">
-        <div className="border-b border-[#E5DFDA] pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div className="border-b border-line pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1A120E]">My Orders History</h1>
-            <p className="text-xs sm:text-sm text-[#5E4E46] mt-1">Track the live status of your purchases and shipping updates. You can cancel pending orders within 30 minutes.</p>
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-ink">My Orders History</h1>
+            <p className="text-xs sm:text-sm text-ink-soft mt-1">Track the live status of your purchases and shipping updates. You can cancel pending orders within 30 minutes.</p>
           </div>
           <button
             onClick={() => {
@@ -104,17 +104,17 @@ export default function MyOrdersPage() {
               fetchUserOrders();
               toast.success("Orders list synchronized!");
             }}
-            className="px-4 py-2 bg-[#EFEAE5] hover:bg-[#E5DFDA] border border-[#E5DFDA] text-[#8C5E73] rounded-full text-xs font-bold transition-all cursor-pointer shadow-xs"
+            className="px-4 py-2 bg-surface hover:bg-line border border-line text-brand rounded-full text-xs font-bold transition-all cursor-pointer shadow-xs"
           >
             ↻ Refresh Status
           </button>
         </div>
 
         {orders.length === 0 ? (
-          <div className="text-center py-20 bg-[#EFEAE5] border border-[#E5DFDA] rounded-3xl shadow-sm">
-            <ShoppingBag size={48} className="mx-auto text-[#B5A59E] mb-3" />
-            <p className="text-base font-serif font-bold text-[#1A120E]">You have not placed any orders yet.</p>
-            <Link href="/products" className="mt-4 inline-block bg-[#8C5E73] hover:bg-[#784E60] text-white text-xs font-medium px-6 py-3 rounded-full transition-all shadow-md shadow-[#8C5E73]/20">
+          <div className="text-center py-20 bg-surface border border-line rounded-3xl shadow-sm">
+            <ShoppingBag size={48} className="mx-auto text-ink-faint mb-3" />
+            <p className="text-base font-serif font-bold text-ink">You have not placed any orders yet.</p>
+            <Link href="/products" className="mt-4 inline-block bg-brand hover:bg-brand-hover text-white text-xs font-medium px-6 py-3 rounded-full transition-all shadow-md shadow-pop/20">
               Explore Products
             </Link>
           </div>
@@ -133,13 +133,13 @@ export default function MyOrdersPage() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   key={order._id}
-                  className="bg-[#EFEAE5] border border-[#E5DFDA] rounded-3xl p-6 shadow-sm space-y-4"
+                  className="bg-surface border border-line rounded-3xl p-6 shadow-sm space-y-4"
                 >
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-[#E5DFDA] pb-3">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-line pb-3">
                     <div>
-                      <span className="text-xs text-[#5E4E46] font-medium">Order ID: </span>
-                      <span className="font-mono text-xs text-[#8C5E73] font-bold">#{order._id.slice(-6).toUpperCase()}</span>
-                      <span className="text-xs text-[#8A7A72] ml-3 font-medium">{new Date(order.createdAt).toLocaleString()}</span>
+                      <span className="text-xs text-ink-soft font-medium">Order ID: </span>
+                      <span className="font-mono text-xs text-brand font-bold">#{order._id.slice(-6).toUpperCase()}</span>
+                      <span className="text-xs text-ink-mute ml-3 font-medium">{new Date(order.createdAt).toLocaleString()}</span>
                     </div>
 
                     {/* Status Badge */}
@@ -160,18 +160,18 @@ export default function MyOrdersPage() {
                   {/* Items List */}
                   <div className="space-y-2">
                     {order.items?.map((item: any, idx: number) => (
-                      <div key={idx} className="flex justify-between items-center text-xs sm:text-sm bg-[#FAF7F5] p-3 rounded-2xl border border-[#E5DFDA]">
-                        <span className="text-[#1A120E] font-bold">{item.title} (x{item.quantity})</span>
-                        <span className="text-[#8C5E73] font-serif font-extrabold">Rs. {(item.price * item.quantity).toLocaleString()}</span>
+                      <div key={idx} className="flex justify-between items-center text-xs sm:text-sm bg-canvas p-3 rounded-2xl border border-line">
+                        <span className="text-ink font-bold">{item.title} (x{item.quantity})</span>
+                        <span className="text-brand font-serif font-extrabold">Rs. {(item.price * item.quantity).toLocaleString()}</span>
                       </div>
                     ))}
                   </div>
 
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-2 border-t border-[#E5DFDA] text-xs sm:text-sm gap-4">
-                    <span className="text-[#5E4E46] font-medium">Total Bill: <strong className="text-[#1A120E] font-serif font-extrabold text-base">Rs. {order.totalAmount?.toLocaleString()}</strong></span>
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-2 border-t border-line text-xs sm:text-sm gap-4">
+                    <span className="text-ink-soft font-medium">Total Bill: <strong className="text-ink font-serif font-extrabold text-base">Rs. {order.totalAmount?.toLocaleString()}</strong></span>
                     
                     <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
-                      <span className="text-[#8C5E73] uppercase tracking-wider text-[11px] font-semibold">Payment: {order.customerDetails?.paymentMethod || "COD"}</span>
+                      <span className="text-brand uppercase tracking-wider text-[11px] font-semibold">Payment: {order.customerDetails?.paymentMethod || "COD"}</span>
                       
                       {canCancel && (
                         <button

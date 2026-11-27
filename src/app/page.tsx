@@ -142,7 +142,7 @@ export default function Home() {
   }, [flashDeals]);
 
   return (
-    <div className="min-h-screen bg-[#FAF7F5] text-[#2C2420] flex flex-col font-sans overflow-x-clip">
+    <div className="min-h-screen bg-canvas text-ink flex flex-col font-sans overflow-x-clip">
       <Navbar />
 
       {/* Hero Section */}
@@ -152,7 +152,7 @@ export default function Home() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="relative overflow-hidden pt-2 sm:pt-4 pb-10 lg:pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full"
       >
-        <div className="relative rounded-[1.75rem] sm:rounded-[3rem] overflow-hidden bg-[#EFEAE5] border border-[#E5DFDA] shadow-xl py-8 sm:py-16 px-4 sm:px-12 lg:px-14 backdrop-blur-xl">
+        <div className="relative rounded-[1.75rem] sm:rounded-[3rem] overflow-hidden bg-surface border border-line shadow-xl py-8 sm:py-16 px-4 sm:px-12 lg:px-14 backdrop-blur-xl">
 
           <div className="absolute inset-0 z-0">
             {backgroundImages.map((img, index) => (
@@ -165,7 +165,7 @@ export default function Home() {
                 <img src={img} alt="Slider Background" className="w-full h-full object-cover filter brightness-95" />
               </div>
             ))}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#FAF7F5]/95 via-[#FAF7F5]/85 to-[#FAF7F5]/70" />
+            <div className="absolute inset-0 bg-gradient-to-r from-canvas/95 via-canvas/85 to-canvas/70" />
           </div>
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
@@ -177,7 +177,7 @@ export default function Home() {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-6"
               >
-                <div className="inline-flex items-center space-x-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#8C5E73]/15 border border-[#8C5E73]/30 text-[#8C5E73] text-[11px] sm:text-sm font-semibold shadow-sm">
+                <div className="inline-flex items-center space-x-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-pop/15 border border-brand/30 text-brand text-[11px] sm:text-sm font-semibold shadow-sm">
                   <Sparkles size={15} className="animate-spin" />
                   <span>Lumière Luxury Collection 2026</span>
                 </div>
@@ -192,10 +192,10 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.3 }}
-                className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold tracking-tight leading-[1.1] text-[#1A120E]"
+                className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold tracking-tight leading-[1.1] text-ink"
               >
                 Elevate Your <br />
-                <span className="italic font-normal text-[#8C5E73] drop-shadow-sm">
+                <span className="italic font-normal text-brand drop-shadow-sm">
                   Lifestyle & Style
                 </span>
               </motion.h1>
@@ -204,7 +204,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.4 }}
-                className="mt-4 sm:mt-5 text-sm sm:text-base text-[#5E4E46] max-w-xl leading-relaxed font-medium mx-auto lg:mx-0"
+                className="mt-4 sm:mt-5 text-sm sm:text-base text-ink-soft max-w-xl leading-relaxed font-medium mx-auto lg:mx-0"
               >
                 Experience seamless shopping with ultra-fast secure checkout, multi-angle product galleries, live tracking, and premium curated items just for you.
               </motion.p>
@@ -219,7 +219,7 @@ export default function Home() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-full sm:w-auto bg-[#8C5E73] hover:bg-[#784E60] text-white font-semibold px-6 sm:px-8 py-3.5 sm:py-4 rounded-full shadow-lg shadow-[#8C5E73]/30 transition-all flex items-center justify-center space-x-2 text-sm sm:text-base cursor-pointer"
+                    className="w-full sm:w-auto bg-brand hover:bg-brand-hover text-white font-semibold px-6 sm:px-8 py-3.5 sm:py-4 rounded-full shadow-lg shadow-pop/30 transition-all flex items-center justify-center space-x-2 text-sm sm:text-base cursor-pointer"
                   >
                     <span>Explore Collection</span>
                     <ArrowRight size={18} />
@@ -230,9 +230,9 @@ export default function Home() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-full sm:w-auto bg-[#FAF7F5]/90 hover:bg-[#FAF7F5] border border-[#E5DFDA] text-[#1A120E] font-semibold px-6 sm:px-8 py-3.5 sm:py-4 rounded-full shadow-sm transition-all flex items-center justify-center space-x-2 text-sm sm:text-base cursor-pointer"
+                    className="w-full sm:w-auto bg-canvas/90 hover:bg-canvas border border-line text-ink font-semibold px-6 sm:px-8 py-3.5 sm:py-4 rounded-full shadow-sm transition-all flex items-center justify-center space-x-2 text-sm sm:text-base cursor-pointer"
                   >
-                    <Heart size={18} className="text-[#8C5E73]" />
+                    <Heart size={18} className="text-brand" />
                     <span>View Wishlist ({mounted ? wishlist.length : 0})</span>
                   </motion.button>
                 </Link>
@@ -241,7 +241,7 @@ export default function Home() {
 
             {/* Soft Rounded Editorial Slideshow Frame Integrated with Hero */}
             <div className="lg:col-span-6 w-full">
-              <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[430px] rounded-[2rem] overflow-hidden border border-[#E5DFDA] bg-[#FAF7F5]/80 shadow-xl">
+              <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[430px] rounded-[2rem] overflow-hidden border border-line bg-canvas/80 shadow-xl">
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={modelImageIndex}
@@ -259,10 +259,10 @@ export default function Home() {
                 <motion.div
                   animate={{ y: [0, -5, 0] }}
                   transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-                  className="absolute bottom-4 left-4 z-20 bg-white/95 backdrop-blur-md border border-[#E5DFDA] px-4 py-2 rounded-2xl shadow-lg flex items-center space-x-2"
+                  className="absolute bottom-4 left-4 z-20 bg-white/95 backdrop-blur-md border border-line px-4 py-2 rounded-2xl shadow-lg flex items-center space-x-2"
                 >
-                  <ShoppingBag size={17} className="text-[#8C5E73]" />
-                  <span className="text-xs font-bold text-[#1A120E]">Hot Trend 2026 🔥</span>
+                  <ShoppingBag size={17} className="text-brand" />
+                  <span className="text-xs font-bold text-ink">Hot Trend 2026 🔥</span>
                 </motion.div>
 
                 {/* Slide Indicators */}
@@ -288,35 +288,35 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.6 }}
-            className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8 border-t border-[#E5DFDA] bg-white/40 p-4 rounded-2xl"
+            className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8 border-t border-line bg-white/40 p-4 rounded-2xl"
           >
             <div className="flex items-center space-x-3 justify-center sm:justify-start">
-              <div className="p-2.5 bg-[#8C5E73]/15 text-[#8C5E73] rounded-2xl font-bold">
+              <div className="p-2.5 bg-pop/15 text-brand rounded-2xl font-bold">
                 <Truck size={22} />
               </div>
               <div>
-                <h4 className="text-xs sm:text-sm font-extrabold text-[#1A120E]">Fast Delivery</h4>
-                <p className="text-[11px] sm:text-xs font-semibold text-[#3C322C]">Quick & reliable shipping</p>
+                <h4 className="text-xs sm:text-sm font-extrabold text-ink">Fast Delivery</h4>
+                <p className="text-[11px] sm:text-xs font-semibold text-ink-soft">Quick & reliable shipping</p>
               </div>
             </div>
 
             <div className="flex items-center space-x-3 justify-center sm:justify-start">
-              <div className="p-2.5 bg-[#8C5E73]/15 text-[#8C5E73] rounded-2xl font-bold">
+              <div className="p-2.5 bg-pop/15 text-brand rounded-2xl font-bold">
                 <ShieldCheck size={22} />
               </div>
               <div>
-                <h4 className="text-xs sm:text-sm font-extrabold text-[#1A120E]">Secure Pay</h4>
-                <p className="text-[11px] sm:text-xs font-semibold text-[#3C322C]">100% Protected transactions</p>
+                <h4 className="text-xs sm:text-sm font-extrabold text-ink">Secure Pay</h4>
+                <p className="text-[11px] sm:text-xs font-semibold text-ink-soft">100% Protected transactions</p>
               </div>
             </div>
 
             <div className="flex items-center space-x-3 justify-center sm:justify-start">
-              <div className="p-2.5 bg-[#8C5E73]/15 text-[#8C5E73] rounded-2xl font-bold">
+              <div className="p-2.5 bg-pop/15 text-brand rounded-2xl font-bold">
                 <Zap size={22} />
               </div>
               <div>
-                <h4 className="text-xs sm:text-sm font-extrabold text-[#1A120E]">Flash Deals</h4>
-                <p className="text-[11px] sm:text-xs font-semibold text-[#3C322C]">Exciting daily discounts</p>
+                <h4 className="text-xs sm:text-sm font-extrabold text-ink">Flash Deals</h4>
+                <p className="text-[11px] sm:text-xs font-semibold text-ink-soft">Exciting daily discounts</p>
               </div>
             </div>
           </motion.div>
@@ -329,16 +329,16 @@ export default function Home() {
         <section id="flash-deals" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div
             className="rounded-[1.75rem] sm:rounded-[2.5rem] p-5 sm:p-8 text-white shadow-xl"
-            style={{ background: "linear-gradient(135deg, #2A1424 0%, #542B49 100%)" }}
+            style={{ background: "linear-gradient(135deg, #3A0F1B 0%, #5C1A2B 100%)" }}
           >
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
               <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-amber-300 text-[#2A1424] rounded-2xl shadow-md">
-                  <Zap size={22} className="fill-[#2A1424]" />
+                <div className="p-2.5 bg-pop text-ink rounded-2xl shadow-md">
+                  <Zap size={22} className="fill-ink" />
                 </div>
                 <div>
                   <h2 className="text-xl sm:text-3xl font-serif font-bold">Flash Deals</h2>
-                  <p className="text-xs sm:text-sm text-[#D9C4CF]">Limited time offers, jaldi karein!</p>
+                  <p className="text-xs sm:text-sm text-on-dark-soft">Limited time offers, jaldi karein!</p>
                 </div>
               </div>
               {flashEndDate && <FlashSaleTimer endDate={flashEndDate} variant="banner" />}
@@ -355,12 +355,12 @@ export default function Home() {
                   <Link
                     key={product._id}
                     href={`/products/${product._id}`}
-                    className="snap-start shrink-0 w-44 sm:w-56 bg-[#EFEAE5] text-[#1A120E] rounded-3xl p-3 hover:-translate-y-1 hover:shadow-2xl transition-all relative"
+                    className="snap-start shrink-0 w-44 sm:w-56 bg-surface text-ink rounded-3xl p-3 hover:-translate-y-1 hover:shadow-2xl transition-all relative"
                   >
-                    <span className="absolute top-5 left-5 z-10 bg-rose-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md">
+                    <span className="absolute top-5 left-5 z-10 bg-pop text-ink text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md">
                       -{dealPercent}%
                     </span>
-                    <div className="w-full h-36 sm:h-44 bg-[#FAF7F5] border border-[#E5DFDA] rounded-2xl overflow-hidden flex items-center justify-center p-2 mb-3">
+                    <div className="w-full h-36 sm:h-44 bg-canvas border border-line rounded-2xl overflow-hidden flex items-center justify-center p-2 mb-3">
                       {dealGallery.length > 0 ? (
                         <ProductCardImageSlider
                           images={dealGallery}
@@ -369,13 +369,13 @@ export default function Home() {
                           staggerDelayMs={(idx % 4) * 650}
                         />
                       ) : (
-                        <span className="text-xs text-[#8A7A72]">No Image</span>
+                        <span className="text-xs text-ink-mute">No Image</span>
                       )}
                     </div>
                     <h3 className="text-sm font-bold line-clamp-1">{product.title}</h3>
                     <div className="flex items-center gap-2 mt-1">
                       <span className="font-serif font-extrabold text-sm">{convertPrice(dealPrice)}</span>
-                      <span className="text-[11px] text-[#8A7A72] line-through font-serif">{convertPrice(dealOriginal)}</span>
+                      <span className="text-[11px] text-ink-mute line-through font-serif">{convertPrice(dealOriginal)}</span>
                     </div>
                   </Link>
                 );
@@ -393,27 +393,27 @@ export default function Home() {
         transition={{ duration: 0.8 }}
         className="py-10 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-grow"
       >
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10 border-b border-[#E5DFDA] pb-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10 border-b border-line pb-6">
           <div>
-            <span className="text-xs uppercase tracking-widest text-[#8C5E73] font-bold">Curated For You</span>
-            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-[#1A120E] mt-1">Trending Products</h2>
-            <p className="text-xs sm:text-sm text-[#5E4E46] mt-1">Browse our top-rated catalog items with instant search</p>
+            <span className="text-xs uppercase tracking-widest text-brand font-bold">Curated For You</span>
+            <h2 className="text-2xl sm:text-4xl font-serif font-bold text-ink mt-1">Trending Products</h2>
+            <p className="text-xs sm:text-sm text-ink-soft mt-1">Browse our top-rated catalog items with instant search</p>
           </div>
 
           <div className="flex items-center gap-3 w-full md:w-auto">
             <div className="relative w-full md:w-80">
-              <Search className="absolute left-4 top-3.5 text-[#7A6A62]" size={18} />
+              <Search className="absolute left-4 top-3.5 text-ink-mute" size={18} />
               <input
                 type="text"
                 placeholder="Search products by title/category..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-[#EFEAE5] border border-[#E5DFDA] rounded-full py-3 pl-11 pr-10 text-xs sm:text-sm text-[#1A120E] placeholder-[#8A7A72] focus:outline-none focus:border-[#8C5E73] transition-all shadow-sm font-medium"
+                className="w-full bg-surface border border-line rounded-full py-3 pl-11 pr-10 text-xs sm:text-sm text-ink placeholder-ink-mute focus:outline-none focus:border-brand transition-all shadow-sm font-medium"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-4 top-3.5 text-[#7A6A62] hover:text-[#1A120E] cursor-pointer"
+                  className="absolute right-4 top-3.5 text-ink-mute hover:text-ink cursor-pointer"
                 >
                   <X size={16} />
                 </button>
@@ -425,7 +425,7 @@ export default function Home() {
                 router.refresh();
                 toast.success("Catalog refreshed!");
               }}
-              className="bg-[#EFEAE5] hover:bg-[#E5DFDA] border border-[#E5DFDA] text-[#8C5E73] text-xs font-semibold px-4 py-3 rounded-full transition-all cursor-pointer shadow-xs whitespace-nowrap"
+              className="bg-surface hover:bg-line border border-line text-brand text-xs font-semibold px-4 py-3 rounded-full transition-all cursor-pointer shadow-xs whitespace-nowrap"
             >
               ↻ Refresh
             </button>
@@ -439,10 +439,10 @@ export default function Home() {
             ))}
           </div>
         ) : filteredProducts.length === 0 ? (
-          <div className="text-center py-20 bg-[#EFEAE5] border border-[#E5DFDA] rounded-3xl shadow-sm">
-            <ShoppingBag size={48} className="mx-auto text-[#B5A59E] mb-3" />
-            <p className="text-base font-bold text-[#1A120E]">No matching products found</p>
-            <p className="text-xs text-[#5E4E46] mt-1">Try searching with a different keyword</p>
+          <div className="text-center py-20 bg-surface border border-line rounded-3xl shadow-sm">
+            <ShoppingBag size={48} className="mx-auto text-ink-faint mb-3" />
+            <p className="text-base font-bold text-ink">No matching products found</p>
+            <p className="text-xs text-ink-soft mt-1">Try searching with a different keyword</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -465,7 +465,7 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.05 }}
                   whileHover={{ y: -6 }}
-                  className="bg-[#EFEAE5] border border-[#E5DFDA] rounded-3xl p-4 flex flex-col justify-between hover:shadow-xl transition-all group relative"
+                  className="bg-surface border border-line rounded-3xl p-4 flex flex-col justify-between hover:shadow-xl transition-all group relative"
                 >
                   <button
                     onClick={(e) => {
@@ -494,7 +494,7 @@ export default function Home() {
                   <div>
                     <div
                       onClick={() => primaryImageUrl && setSelectedImage(primaryImageUrl)}
-                      className="w-full h-56 bg-[#FAF7F5] border border-[#E5DFDA] rounded-2xl overflow-hidden mb-4 flex items-center justify-center p-3 relative cursor-pointer group/img"
+                      className="w-full h-56 bg-canvas border border-line rounded-2xl overflow-hidden mb-4 flex items-center justify-center p-3 relative cursor-pointer group/img"
                     >
                       {gallery.length > 0 ? (
                         <>
@@ -505,37 +505,37 @@ export default function Home() {
                             staggerDelayMs={(index % 4) * 650}
                           />
                           <div className="pointer-events-none absolute inset-0 bg-black/20 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
-                            <span className="bg-[#8C5E73] text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow-lg flex items-center space-x-1">
+                            <span className="bg-brand text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow-lg flex items-center space-x-1">
                               <Eye size={14} />
                               <span>Click to Zoom</span>
                             </span>
                           </div>
                         </>
                       ) : (
-                        <span className="text-xs text-[#8A7A72]">No Image</span>
+                        <span className="text-xs text-ink-mute">No Image</span>
                       )}
-                      <span className="absolute top-3 left-3 z-10 bg-[#EFEAE5]/90 backdrop-blur-md border border-[#E5DFDA] text-[#8C5E73] text-[10px] font-bold px-3 py-1 rounded-full">
+                      <span className="absolute top-3 left-3 z-10 bg-surface/90 backdrop-blur-md border border-line text-brand text-[10px] font-bold px-3 py-1 rounded-full">
                         {product.category || "General"}
                       </span>
 
                       {hasDiscount && (
-                        <span className="absolute bottom-3 left-3 bg-rose-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md z-10 animate-pulse">
+                        <span className="absolute bottom-3 left-3 bg-pop text-ink text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md z-10 animate-pulse">
                           -{discountPercent}% OFF
                         </span>
                       )}
                     </div>
 
-                    <h3 className="text-base font-bold text-[#1A120E] line-clamp-1 mb-1">{product.title}</h3>
-                    <p className="text-xs text-[#5E4E46] line-clamp-2 mb-4">{product.description}</p>
+                    <h3 className="text-base font-bold text-ink line-clamp-1 mb-1">{product.title}</h3>
+                    <p className="text-xs text-ink-soft line-clamp-2 mb-4">{product.description}</p>
                   </div>
 
-                  <div className="flex items-center justify-between pt-3 border-t border-[#E5DFDA]">
+                  <div className="flex items-center justify-between pt-3 border-t border-line">
                     <div className="flex items-center gap-2">
-                      <span className="text-[#1A120E] font-serif font-extrabold text-base">
+                      <span className="text-ink font-serif font-extrabold text-base">
                         {convertPrice(discountedPrice)}
                       </span>
                       {hasDiscount && (
-                        <span className="text-xs text-[#8A7A72] line-through font-serif">
+                        <span className="text-xs text-ink-mute line-through font-serif">
                           {convertPrice(originalPrice)}
                         </span>
                       )}
@@ -543,7 +543,7 @@ export default function Home() {
 
                     <Link
                       href={`/products/${product._id}`}
-                      className="bg-[#F7EBEF] hover:bg-[#8C5E73] text-[#8C5E73] hover:text-white text-xs font-semibold px-4 py-2.5 rounded-full transition-all flex items-center space-x-1 cursor-pointer shadow-sm"
+                      className="bg-surface-soft hover:bg-brand text-brand hover:text-white text-xs font-semibold px-4 py-2.5 rounded-full transition-all flex items-center space-x-1 cursor-pointer shadow-sm"
                     >
                       <Eye size={14} />
                       <span>View</span>
@@ -574,11 +574,11 @@ export default function Home() {
               exit={{ opacity: 0, scale: 0.8, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-4xl max-h-[90vh] bg-[#EFEAE5] border border-[#E5DFDA] rounded-3xl p-4 sm:p-6 shadow-2xl flex items-center justify-center"
+              className="relative max-w-4xl max-h-[90vh] bg-surface border border-line rounded-3xl p-4 sm:p-6 shadow-2xl flex items-center justify-center"
             >
               <button
                 onClick={() => setSelectedImage(null)}
-                className="absolute top-4 right-4 z-10 bg-[#E5DFDA] hover:bg-[#D9D3CE] text-[#1A120E] p-2.5 rounded-full transition-all cursor-pointer shadow-md"
+                className="absolute top-4 right-4 z-10 bg-line hover:bg-line-strong text-ink p-2.5 rounded-full transition-all cursor-pointer shadow-md"
               >
                 <X size={20} />
               </button>

@@ -135,7 +135,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F5] text-[#2C2420] font-sans flex flex-col">
+    <div className="min-h-screen bg-canvas text-ink font-sans flex flex-col">
       <Navbar />
 
       <div className="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
@@ -143,14 +143,14 @@ export default function RegisterPage() {
           initial={{ opacity: 0, y: -20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="w-full max-w-sm sm:max-w-md bg-[#EFEAE5] border border-[#E5DFDA] p-6 sm:p-8 rounded-[2.5rem] shadow-sm"
+          className="w-full max-w-sm sm:max-w-md bg-surface border border-line p-6 sm:p-8 rounded-[2.5rem] shadow-sm"
         >
           <div className="text-center mb-6 sm:mb-8">
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-              className="inline-flex p-3 bg-[#8C5E73]/10 border border-[#8C5E73]/20 rounded-2xl text-[#8C5E73] mb-3 sm:mb-4"
+              className="inline-flex p-3 bg-pop/10 border border-brand/20 rounded-2xl text-brand mb-3 sm:mb-4"
             >
               {step === "register" ? (
                 <User size={28} className="sm:w-8 sm:h-8" />
@@ -158,10 +158,10 @@ export default function RegisterPage() {
                 <ShieldCheck size={28} className="sm:w-8 sm:h-8" />
               )}
             </motion.div>
-            <h2 className="text-xl sm:text-2xl font-serif font-bold tracking-tight text-[#1A120E]">
+            <h2 className="text-xl sm:text-2xl font-serif font-bold tracking-tight text-ink">
               {step === "register" ? "Create an Account" : "Enter OTP Code"}
             </h2>
-            <p className="text-xs sm:text-sm text-[#5E4E46] mt-1 whitespace-pre-line">
+            <p className="text-xs sm:text-sm text-ink-soft mt-1 whitespace-pre-line">
               {step === "register"
                 ? "Join Lumière for a curated shopping experience"
                 : `We have sent a 6-digit OTP to\n${email}`}
@@ -171,57 +171,57 @@ export default function RegisterPage() {
           {step === "register" ? (
             <form onSubmit={handleRegister} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-[#5E4E46] mb-1.5">
+                <label className="block text-xs font-semibold text-ink-soft mb-1.5">
                   Full Name
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3.5 top-3.5 text-[#7A6A62]" size={18} />
+                  <User className="absolute left-3.5 top-3.5 text-ink-mute" size={18} />
                   <input
                     type="text"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="John Doe"
-                    className="w-full bg-[#FAF7F5] border border-[#E5DFDA] rounded-2xl px-4 py-3 pl-11 text-xs sm:text-sm text-[#1A120E] placeholder-[#8A7A72] focus:outline-none focus:border-[#8C5E73] font-medium transition-all"
+                    className="w-full bg-canvas border border-line rounded-2xl px-4 py-3 pl-11 text-xs sm:text-sm text-ink placeholder-ink-mute focus:outline-none focus:border-brand font-medium transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#5E4E46] mb-1.5">
+                <label className="block text-xs font-semibold text-ink-soft mb-1.5">
                   Email Address
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3.5 top-3.5 text-[#7A6A62]" size={18} />
+                  <Mail className="absolute left-3.5 top-3.5 text-ink-mute" size={18} />
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@example.com"
-                    className="w-full bg-[#FAF7F5] border border-[#E5DFDA] rounded-2xl px-4 py-3 pl-11 text-xs sm:text-sm text-[#1A120E] placeholder-[#8A7A72] focus:outline-none focus:border-[#8C5E73] font-medium transition-all"
+                    className="w-full bg-canvas border border-line rounded-2xl px-4 py-3 pl-11 text-xs sm:text-sm text-ink placeholder-ink-mute focus:outline-none focus:border-brand font-medium transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#5E4E46] mb-1.5">
+                <label className="block text-xs font-semibold text-ink-soft mb-1.5">
                   Password
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3.5 top-3.5 text-[#7A6A62]" size={18} />
+                  <Lock className="absolute left-3.5 top-3.5 text-ink-mute" size={18} />
                   <input
                     type={showPassword ? "text" : "password"}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full bg-[#FAF7F5] border border-[#E5DFDA] rounded-2xl px-4 py-3 pl-11 pr-11 text-xs sm:text-sm text-[#1A120E] placeholder-[#8A7A72] focus:outline-none focus:border-[#8C5E73] font-medium transition-all"
+                    className="w-full bg-canvas border border-line rounded-2xl px-4 py-3 pl-11 pr-11 text-xs sm:text-sm text-ink placeholder-ink-mute focus:outline-none focus:border-brand font-medium transition-all"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3.5 top-3.5 text-[#7A6A62] hover:text-[#1A120E] cursor-pointer"
+                    className="absolute right-3.5 top-3.5 text-ink-mute hover:text-ink cursor-pointer"
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
@@ -233,7 +233,7 @@ export default function RegisterPage() {
                 whileTap={{ scale: 0.98 }}
                 type="submit"
                 disabled={loading}
-                className="w-full mt-2 bg-[#8C5E73] hover:bg-[#784E60] text-white font-medium py-3.5 rounded-full shadow-md shadow-[#8C5E73]/25 transition-all flex items-center justify-center space-x-2 text-sm cursor-pointer disabled:opacity-50"
+                className="w-full mt-2 bg-brand hover:bg-brand-hover text-white font-medium py-3.5 rounded-full shadow-md shadow-pop/25 transition-all flex items-center justify-center space-x-2 text-sm cursor-pointer disabled:opacity-50"
               >
                 {loading ? (
                   <Loader2 className="animate-spin" size={20} />
@@ -248,7 +248,7 @@ export default function RegisterPage() {
           ) : (
             <form onSubmit={handleVerifyOtp} className="space-y-6">
               <div>
-                <label className="block text-xs font-semibold text-[#5E4E46] mb-3 text-center">
+                <label className="block text-xs font-semibold text-ink-soft mb-3 text-center">
                   Enter 6-Digit Verification Code
                 </label>
                 {/* 6 Individual Digit Inputs */}
@@ -263,7 +263,7 @@ export default function RegisterPage() {
                       onChange={(e) => handleOtpChange(e.target.value, index)}
                       onKeyDown={(e) => handleOtpKeyDown(e, index)}
                       onPaste={handleOtpPaste}
-                      className="w-10 h-12 sm:w-12 sm:h-14 text-center text-xl sm:text-2xl font-bold bg-[#FAF7F5] border border-[#E5DFDA] rounded-2xl text-[#1A120E] focus:outline-none focus:border-[#8C5E73] focus:ring-2 focus:ring-[#8C5E73]/30 transition-all shadow-xs"
+                      className="w-10 h-12 sm:w-12 sm:h-14 text-center text-xl sm:text-2xl font-bold bg-canvas border border-line rounded-2xl text-ink focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/30 transition-all shadow-xs"
                     />
                   ))}
                 </div>
@@ -274,7 +274,7 @@ export default function RegisterPage() {
                 whileTap={{ scale: 0.98 }}
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#8C5E73] hover:bg-[#784E60] text-white font-medium py-3.5 rounded-full shadow-md shadow-[#8C5E73]/25 transition-all flex items-center justify-center space-x-2 text-sm cursor-pointer disabled:opacity-50"
+                className="w-full bg-brand hover:bg-brand-hover text-white font-medium py-3.5 rounded-full shadow-md shadow-pop/25 transition-all flex items-center justify-center space-x-2 text-sm cursor-pointer disabled:opacity-50"
               >
                 {loading ? (
                   <Loader2 className="animate-spin" size={20} />
@@ -283,13 +283,13 @@ export default function RegisterPage() {
                 )}
               </motion.button>
 
-              <div className="text-center text-xs text-[#5E4E46]">
+              <div className="text-center text-xs text-ink-soft">
                 Didn&apos;t receive the code?{" "}
                 <button
                   type="button"
                   onClick={handleResendOtp}
                   disabled={loading}
-                  className="text-[#8C5E73] hover:text-[#784E60] font-semibold underline underline-offset-4 cursor-pointer"
+                  className="text-brand hover:text-brand-hover font-semibold underline underline-offset-4 cursor-pointer"
                 >
                   Resend
                 </button>
@@ -297,9 +297,9 @@ export default function RegisterPage() {
             </form>
           )}
 
-          <div className="mt-6 text-center text-xs sm:text-sm text-[#5E4E46]">
+          <div className="mt-6 text-center text-xs sm:text-sm text-ink-soft">
             Already have an account?{" "}
-            <Link href="/login" className="text-[#8C5E73] hover:text-[#784E60] font-semibold underline underline-offset-4">
+            <Link href="/login" className="text-brand hover:text-brand-hover font-semibold underline underline-offset-4">
               Sign In
             </Link>
           </div>

@@ -18,7 +18,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   colorScheme: "only light",
-  themeColor: "#FAF7F5",
+  themeColor: "#FDF8F9",
 };
 
 export default function RootLayout({
@@ -28,7 +28,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased bg-[#FAF7F5] text-[#2C2420]`}>
+      <body className={`${inter.className} antialiased bg-canvas text-ink`}>
         <CurrencyProvider>
           <WishlistProvider>
             <Providers>
@@ -52,13 +52,13 @@ export default function RootLayout({
                   <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7 fill-white text-[#25D366]" />
                   
                   {/* Notification Badge */}
-                  <span className="absolute -top-1 -right-1 bg-rose-600 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-md animate-bounce border-2 border-white">
+                  <span className="absolute -top-1 -right-1 bg-pop text-ink text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-md animate-bounce border-2 border-white">
                     1
                   </span>
                 </div>
 
                 {/* Hover Tooltip Label */}
-                <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-white/95 text-[#1A120E] text-xs font-bold px-3 py-2 rounded-2xl shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap border border-[#E5DFDA] backdrop-blur-md pointer-events-none hidden sm:block">
+                <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-white/95 text-ink text-xs font-bold px-3 py-2 rounded-2xl shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap border border-line backdrop-blur-md pointer-events-none hidden sm:block">
                   💬 Need Help? Chat on WhatsApp
                 </span>
               </a>

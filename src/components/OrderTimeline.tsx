@@ -55,18 +55,18 @@ export default function OrderTimeline({ status }: OrderTimelineProps) {
   const progressWidth = ((currentStep - 1) / (steps.length - 1)) * 100;
 
   return (
-    <div className="mt-5 pt-4 border-t border-[#E5DFDA]">
+    <div className="mt-5 pt-4 border-t border-line">
       <div className="relative flex items-center justify-between w-full px-2 sm:px-6">
         
         {/* Background Grey Track Line */}
-        <div className="absolute left-6 right-6 sm:left-10 sm:right-10 top-4 h-1 bg-[#E5DFDA] rounded-full z-0" />
+        <div className="absolute left-6 right-6 sm:left-10 sm:right-10 top-4 h-1 bg-line rounded-full z-0" />
 
         {/* Active Animated Brand Line */}
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `calc(${progressWidth}% - 20px)` }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
-          className="absolute left-6 sm:left-10 top-4 h-1 bg-[#8C5E73] rounded-full z-0 max-w-[calc(100%-3rem)] sm:max-w-[calc(100%-5rem)]"
+          className="absolute left-6 sm:left-10 top-4 h-1 bg-brand rounded-full z-0 max-w-[calc(100%-3rem)] sm:max-w-[calc(100%-5rem)]"
         />
 
         {steps.map((step) => {
@@ -80,9 +80,9 @@ export default function OrderTimeline({ status }: OrderTimelineProps) {
               <div
                 className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
                   isCompleted
-                    ? "bg-[#8C5E73] border-[#8C5E73] text-white shadow-md shadow-[#8C5E73]/25"
-                    : "bg-[#FAF7F5] border-[#D6CEC8] text-[#9A8A82]"
-                } ${isCurrent ? "ring-4 ring-[#8C5E73]/20" : ""}`}
+                    ? "bg-brand border-brand text-white shadow-md shadow-pop/25"
+                    : "bg-canvas border-line-strong text-ink-mute"
+                } ${isCurrent ? "ring-4 ring-brand/20" : ""}`}
               >
                 {step.id < currentStep || normalizedStatus === "Delivered" ? (
                   <Check size={15} strokeWidth={3} />
@@ -94,7 +94,7 @@ export default function OrderTimeline({ status }: OrderTimelineProps) {
               {/* Step Label */}
               <span
                 className={`mt-2 text-[10px] sm:text-xs font-semibold text-center max-w-[70px] sm:max-w-none leading-tight ${
-                  isCompleted ? "text-[#1A120E]" : "text-[#8C7A72]"
+                  isCompleted ? "text-ink" : "text-ink-mute"
                 }`}
               >
                 {step.label}

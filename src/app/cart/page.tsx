@@ -50,18 +50,18 @@ export default function CartPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#FAF7F5] text-[#2C2420] font-sans flex flex-col">
+    <div className="min-h-screen bg-canvas text-ink font-sans flex flex-col">
       <Navbar />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-12 flex-grow w-full">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 border-b border-[#E5DFDA] pb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 border-b border-line pb-6">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-[#1A120E] flex items-center space-x-3">
-              <ShoppingBag className="text-[#8C5E73]" size={28} />
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold text-ink flex items-center space-x-3">
+              <ShoppingBag className="text-brand" size={28} />
               <span>Shopping Cart</span>
             </h1>
-            <p className="text-xs sm:text-sm text-[#5E4E46] mt-1">
+            <p className="text-xs sm:text-sm text-ink-soft mt-1">
               Review your items before proceeding to checkout
             </p>
           </div>
@@ -80,15 +80,15 @@ export default function CartPage() {
         </div>
 
         {cart.length === 0 ? (
-          <div className="text-center py-20 bg-[#EFEAE5] border border-[#E5DFDA] rounded-3xl shadow-sm">
-            <ShoppingBag className="mx-auto text-[#B5A59E] mb-4" size={48} />
-            <h2 className="text-lg sm:text-xl font-serif font-bold text-[#1A120E] mb-2">Your cart is empty</h2>
-            <p className="text-xs text-[#5E4E46] mb-6">
+          <div className="text-center py-20 bg-surface border border-line rounded-3xl shadow-sm">
+            <ShoppingBag className="mx-auto text-ink-faint mb-4" size={48} />
+            <h2 className="text-lg sm:text-xl font-serif font-bold text-ink mb-2">Your cart is empty</h2>
+            <p className="text-xs text-ink-soft mb-6">
               Explore our catalog and add items to your cart.
             </p>
             <Link
               href="/products"
-              className="inline-flex items-center space-x-2 bg-[#8C5E73] hover:bg-[#784E60] text-white text-xs sm:text-sm px-6 py-3 rounded-full transition-all shadow-md shadow-[#8C5E73]/20"
+              className="inline-flex items-center space-x-2 bg-brand hover:bg-brand-hover text-white text-xs sm:text-sm px-6 py-3 rounded-full transition-all shadow-md shadow-pop/20"
             >
               <ArrowLeft size={16} />
               <span>Start Shopping</span>
@@ -112,12 +112,12 @@ export default function CartPage() {
                 return (
                   <div
                     key={`${item._id}-${item.selectedSize}`}
-                    className={`flex flex-col sm:flex-row items-start sm:items-center justify-between bg-[#EFEAE5] border p-4 sm:p-5 rounded-3xl gap-4 shadow-sm transition-all ${
-                      isExceedingStock ? "border-rose-400 bg-rose-50/40" : "border-[#E5DFDA]"
+                    className={`flex flex-col sm:flex-row items-start sm:items-center justify-between bg-surface border p-4 sm:p-5 rounded-3xl gap-4 shadow-sm transition-all ${
+                      isExceedingStock ? "border-rose-400 bg-rose-50/40" : "border-line"
                     }`}
                   >
                     <div className="flex items-center space-x-4 w-full sm:w-auto">
-                      <div className="w-20 h-20 bg-[#FAF7F5] border border-[#E5DFDA] rounded-2xl overflow-hidden flex-shrink-0 flex items-center justify-center p-2">
+                      <div className="w-20 h-20 bg-canvas border border-line rounded-2xl overflow-hidden flex-shrink-0 flex items-center justify-center p-2">
                         {imageUrl ? (
                           <img
                             src={imageUrl}
@@ -125,20 +125,20 @@ export default function CartPage() {
                             className="w-full h-full object-contain"
                           />
                         ) : (
-                          <span className="text-[10px] text-[#8A7A72]">No Image</span>
+                          <span className="text-[10px] text-ink-mute">No Image</span>
                         )}
                       </div>
 
                       <div className="flex-grow">
-                        <h3 className="text-sm sm:text-base font-bold text-[#1A120E] line-clamp-1">
+                        <h3 className="text-sm sm:text-base font-bold text-ink line-clamp-1">
                           {item.title}
                         </h3>
-                        <p className="text-xs text-[#5E4E46] mt-0.5 font-medium">
+                        <p className="text-xs text-ink-soft mt-0.5 font-medium">
                           Category: {item.category || "General"}
                         </p>
                         {item.selectedSize && item.selectedSize !== "Standard" && (
-                          <p className="text-xs text-[#8C7A72] font-semibold mt-0.5">
-                            Size: <span className="text-[#8C5E73]">{item.selectedSize}</span>
+                          <p className="text-xs text-ink-mute font-semibold mt-0.5">
+                            Size: <span className="text-brand">{item.selectedSize}</span>
                           </p>
                         )}
                         {liveLoaded && (
@@ -159,15 +159,15 @@ export default function CartPage() {
                             </span>
                           </p>
                         )}
-                        <div className="flex items-center text-[#1A120E] font-serif font-extrabold text-sm mt-1 sm:hidden">
+                        <div className="flex items-center text-ink font-serif font-extrabold text-sm mt-1 sm:hidden">
                           <span>{convertPrice(unitPrice * item.quantity)}</span>
                         </div>
                       </div>
                     </div>
 
                     {/* Quantity Controls & Delete */}
-                    <div className="flex items-center justify-between w-full sm:w-auto space-x-4 pt-2 sm:pt-0 border-t sm:border-0 border-[#E5DFDA]">
-                      <div className="flex items-center space-x-2 bg-[#FAF7F5] border border-[#E5DFDA] rounded-full p-1.5 shadow-inner">
+                    <div className="flex items-center justify-between w-full sm:w-auto space-x-4 pt-2 sm:pt-0 border-t sm:border-0 border-line">
+                      <div className="flex items-center space-x-2 bg-canvas border border-line rounded-full p-1.5 shadow-inner">
                         <button
                           onClick={() => {
                             if (item.quantity > 1) {
@@ -175,11 +175,11 @@ export default function CartPage() {
                               toast.success("Quantity updated");
                             }
                           }}
-                          className="p-1.5 hover:bg-[#EFEAE5] rounded-full text-[#5E4E46] transition-colors cursor-pointer"
+                          className="p-1.5 hover:bg-surface rounded-full text-ink-soft transition-colors cursor-pointer"
                         >
                           <Minus size={14} />
                         </button>
-                        <span className="text-sm font-bold px-2 text-[#1A120E]">
+                        <span className="text-sm font-bold px-2 text-ink">
                           {item.quantity}
                         </span>
                         <button
@@ -191,13 +191,13 @@ export default function CartPage() {
                             addToCart(item, 1);
                             toast.success("Quantity updated");
                           }}
-                          className="p-1.5 hover:bg-[#EFEAE5] rounded-full text-[#5E4E46] transition-colors cursor-pointer"
+                          className="p-1.5 hover:bg-surface rounded-full text-ink-soft transition-colors cursor-pointer"
                         >
                           <Plus size={14} />
                         </button>
                       </div>
 
-                      <div className="hidden sm:flex items-center text-[#1A120E] font-serif font-extrabold text-base w-28 justify-end">
+                      <div className="hidden sm:flex items-center text-ink font-serif font-extrabold text-base w-28 justify-end">
                         <span>{convertPrice(unitPrice * item.quantity)}</span>
                       </div>
 
@@ -218,23 +218,23 @@ export default function CartPage() {
             </div>
 
             {/* Order Summary Box */}
-            <div className="bg-[#EFEAE5] border border-[#E5DFDA] p-6 rounded-3xl h-fit shadow-sm">
-              <h3 className="text-lg font-serif font-bold text-[#1A120E] mb-4 border-b border-[#E5DFDA] pb-3">
+            <div className="bg-surface border border-line p-6 rounded-3xl h-fit shadow-sm">
+              <h3 className="text-lg font-serif font-bold text-ink mb-4 border-b border-line pb-3">
                 Order Summary
               </h3>
 
-              <div className="space-y-3 text-sm text-[#5E4E46] mb-6 font-medium">
+              <div className="space-y-3 text-sm text-ink-soft mb-6 font-medium">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span className="text-[#1A120E] font-bold">{convertPrice(totalPrice)}</span>
+                  <span className="text-ink font-bold">{convertPrice(totalPrice)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping</span>
                   <span className="text-emerald-700 font-bold">Free</span>
                 </div>
-                <div className="border-t border-[#E5DFDA] pt-3 flex justify-between text-base font-serif font-bold text-[#1A120E]">
+                <div className="border-t border-line pt-3 flex justify-between text-base font-serif font-bold text-ink">
                   <span>Total</span>
-                  <span className="text-[#8C5E73]">{convertPrice(totalPrice)}</span>
+                  <span className="text-brand">{convertPrice(totalPrice)}</span>
                 </div>
               </div>
 
@@ -248,7 +248,7 @@ export default function CartPage() {
                 type="button"
                 disabled={hasStockIssue}
                 onClick={() => router.push("/checkout")}
-                className="w-full bg-[#8C5E73] hover:bg-[#784E60] text-white font-medium py-3.5 rounded-full shadow-md shadow-[#8C5E73]/25 transition-all text-sm cursor-pointer text-center block disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-brand hover:bg-brand-hover text-white font-medium py-3.5 rounded-full shadow-md shadow-pop/25 transition-all text-sm cursor-pointer text-center block disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Proceed to Checkout
               </button>

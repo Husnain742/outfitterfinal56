@@ -98,20 +98,20 @@ export default function ProductReviews({ productId }: { productId: string }) {
       : "5.0";
 
   return (
-    <div className="space-y-8 mt-12 border-t border-[#E5DFDA] pt-10">
+    <div className="space-y-8 mt-12 border-t border-line pt-10">
       {/* Header & Overall Rating */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-[#EFEAE5] border border-[#E5DFDA] p-6 rounded-3xl">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-surface border border-line p-6 rounded-3xl">
         <div>
-          <h3 className="text-2xl font-serif font-bold text-[#1A120E]">Customer Reviews & Photos</h3>
-          <p className="text-xs text-[#5E4E46] mt-1">Real feedback from clients who purchased this handmade item.</p>
+          <h3 className="text-2xl font-serif font-bold text-ink">Customer Reviews & Photos</h3>
+          <p className="text-xs text-ink-soft mt-1">Real feedback from clients who purchased this handmade item.</p>
         </div>
-        <div className="flex items-center space-x-3 bg-[#FAF7F5] px-5 py-3 rounded-2xl border border-[#E5DFDA]">
+        <div className="flex items-center space-x-3 bg-canvas px-5 py-3 rounded-2xl border border-line">
           <div className="flex text-amber-500">
             {[...Array(5)].map((_, i) => (
               <Star key={i} size={18} fill={i < Math.round(Number(avgRating)) ? "currentColor" : "none"} />
             ))}
           </div>
-          <span className="font-serif font-bold text-lg text-[#1A120E]">{avgRating} <span className="text-xs text-[#5E4E46] font-sans font-normal">({reviews.length} reviews)</span></span>
+          <span className="font-serif font-bold text-lg text-ink">{avgRating} <span className="text-xs text-ink-soft font-sans font-normal">({reviews.length} reviews)</span></span>
         </div>
       </div>
 
@@ -129,55 +129,55 @@ export default function ProductReviews({ productId }: { productId: string }) {
         <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2">
           {loading ? (
             <div className="flex justify-center py-10">
-              <Loader2 className="animate-spin text-[#8C5E73]" size={32} />
+              <Loader2 className="animate-spin text-brand" size={32} />
             </div>
           ) : reviews.length === 0 ? (
-            <div className="text-center py-12 bg-[#EFEAE5] border border-[#E5DFDA] rounded-3xl p-6">
-              <MessageSquare className="mx-auto text-[#8C5E73] mb-2" size={28} />
-              <p className="text-sm font-bold text-[#1A120E]">No reviews yet</p>
-              <p className="text-xs text-[#5E4E46] mt-1">Be the first to share your experience with this handmade creation!</p>
+            <div className="text-center py-12 bg-surface border border-line rounded-3xl p-6">
+              <MessageSquare className="mx-auto text-brand mb-2" size={28} />
+              <p className="text-sm font-bold text-ink">No reviews yet</p>
+              <p className="text-xs text-ink-soft mt-1">Be the first to share your experience with this handmade creation!</p>
             </div>
           ) : (
             reviews.map((rev) => (
-              <div key={rev._id} className="bg-[#EFEAE5] border border-[#E5DFDA] p-5 rounded-3xl space-y-3">
+              <div key={rev._id} className="bg-surface border border-line p-5 rounded-3xl space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="font-bold text-sm text-[#1A120E]">{rev.customerName}</span>
+                  <span className="font-bold text-sm text-ink">{rev.customerName}</span>
                   <div className="flex text-amber-500">
                     {[...Array(rev.rating)].map((_, i) => (
                       <Star key={i} size={14} fill="currentColor" />
                     ))}
                   </div>
                 </div>
-                <p className="text-xs text-[#5E4E46] leading-relaxed">{rev.comment}</p>
+                <p className="text-xs text-ink-soft leading-relaxed">{rev.comment}</p>
                 {rev.image && (
                   <div className="mt-2">
-                    <img src={rev.image} alt="Customer Review Photo" className="w-24 h-24 object-cover rounded-2xl border border-[#E5DFDA] shadow-xs" />
+                    <img src={rev.image} alt="Customer Review Photo" className="w-24 h-24 object-cover rounded-2xl border border-line shadow-xs" />
                   </div>
                 )}
-                <p className="text-[10px] text-[#A88B9A]">{new Date(rev.createdAt).toLocaleDateString()}</p>
+                <p className="text-[10px] text-on-dark-mute">{new Date(rev.createdAt).toLocaleDateString()}</p>
               </div>
             ))
           )}
         </div>
 
         {/* Right: Write a Review Form */}
-        <div className="bg-[#EFEAE5] border border-[#E5DFDA] p-6 sm:p-8 rounded-3xl space-y-6">
-          <h4 className="text-lg font-serif font-bold text-[#1A120E]">Leave Your Review & Photo</h4>
+        <div className="bg-surface border border-line p-6 sm:p-8 rounded-3xl space-y-6">
+          <h4 className="text-lg font-serif font-bold text-ink">Leave Your Review & Photo</h4>
           <form onSubmit={handleSubmitReview} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-[#5E4E46] mb-1">Your Name</label>
+              <label className="block text-xs font-semibold text-ink-soft mb-1">Your Name</label>
               <input
                 type="text"
                 placeholder="e.g. Ayesha Khan"
                 value={customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
-                className="w-full bg-[#FAF7F5] border border-[#E5DFDA] rounded-2xl p-3 text-xs font-medium text-[#1A120E] focus:outline-none"
+                className="w-full bg-canvas border border-line rounded-2xl p-3 text-xs font-medium text-ink focus:outline-none"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#5E4E46] mb-1">Rating</label>
+              <label className="block text-xs font-semibold text-ink-soft mb-1">Rating</label>
               <div className="flex space-x-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -185,7 +185,7 @@ export default function ProductReviews({ productId }: { productId: string }) {
                     key={star}
                     onClick={() => setRating(star)}
                     className={`p-2 rounded-xl border transition-all cursor-pointer ${
-                      rating >= star ? "bg-[#8C5E73] text-white border-[#8C5E73]" : "bg-[#FAF7F5] text-[#5E4E46] border-[#E5DFDA]"
+                      rating >= star ? "bg-brand text-white border-brand" : "bg-canvas text-ink-soft border-line"
                     }`}
                   >
                     <Star size={16} fill={rating >= star ? "currentColor" : "none"} />
@@ -195,27 +195,27 @@ export default function ProductReviews({ productId }: { productId: string }) {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#5E4E46] mb-1">Review Comment</label>
+              <label className="block text-xs font-semibold text-ink-soft mb-1">Review Comment</label>
               <textarea
                 rows={3}
                 placeholder="Write about the quality of this handmade item..."
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                className="w-full bg-[#FAF7F5] border border-[#E5DFDA] rounded-2xl p-3 text-xs font-medium text-[#1A120E] focus:outline-none resize-none"
+                className="w-full bg-canvas border border-line rounded-2xl p-3 text-xs font-medium text-ink focus:outline-none resize-none"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#5E4E46] mb-1">Upload Real Photo (Optional)</label>
+              <label className="block text-xs font-semibold text-ink-soft mb-1">Upload Real Photo (Optional)</label>
               <div className="flex items-center space-x-4">
-                <label className="flex-grow flex items-center justify-center px-4 py-3 bg-[#FAF7F5] border border-[#E5DFDA] rounded-2xl cursor-pointer hover:bg-[#FAF7F5]/80 transition-all text-xs font-semibold text-[#5E4E46]">
-                  <Upload size={16} className="mr-2 text-[#8C5E73]" />
+                <label className="flex-grow flex items-center justify-center px-4 py-3 bg-canvas border border-line rounded-2xl cursor-pointer hover:bg-canvas/80 transition-all text-xs font-semibold text-ink-soft">
+                  <Upload size={16} className="mr-2 text-brand" />
                   <span>{uploadingImage ? "Uploading..." : image ? "Photo Uploaded ✔" : "Choose Image"}</span>
                   <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
                 </label>
                 {image && (
-                  <img src={image} alt="Preview" className="w-12 h-12 rounded-xl object-cover border border-[#E5DFDA]" />
+                  <img src={image} alt="Preview" className="w-12 h-12 rounded-xl object-cover border border-line" />
                 )}
               </div>
             </div>
@@ -223,7 +223,7 @@ export default function ProductReviews({ productId }: { productId: string }) {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-3.5 bg-[#8C5E73] hover:bg-[#784E60] text-white font-medium rounded-full text-xs shadow-md transition-all cursor-pointer flex items-center justify-center space-x-2"
+              className="w-full py-3.5 bg-brand hover:bg-brand-hover text-white font-medium rounded-full text-xs shadow-md transition-all cursor-pointer flex items-center justify-center space-x-2"
             >
               {submitting ? <Loader2 className="animate-spin" size={16} /> : <span>Submit Review</span>}
             </button>

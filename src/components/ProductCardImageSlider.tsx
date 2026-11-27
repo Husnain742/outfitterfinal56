@@ -34,7 +34,7 @@ export default function ProductCardImageSlider({
 
   if (validImages.length === 0) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-[#EFEAE5] text-xs text-[#8A7A72]">
+      <div className="w-full h-full flex items-center justify-center bg-surface text-xs text-ink-mute">
         No Image
       </div>
     );
