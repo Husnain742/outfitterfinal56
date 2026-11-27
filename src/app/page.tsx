@@ -62,7 +62,6 @@ export default function Home() {
   const [currentTime, setCurrentTime] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [mounted, setMounted] = useState(false);
-  // Date.now() render ke dauran nahi chalta (Next.js error), isliye state mein rakha hai
   const [nowMs, setNowMs] = useState(0);
 
   const { wishlist, addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
@@ -121,7 +120,6 @@ export default function Home() {
     [products, searchQuery]
   );
 
-  // ---------- Flash Deals: jin products par sale abhi chal rahi hai ----------
   const flashDeals = useMemo(
     () =>
       products
@@ -239,7 +237,6 @@ export default function Home() {
               </motion.div>
             </div>
 
-            {/* Soft Rounded Editorial Slideshow Frame Integrated with Hero */}
             <div className="lg:col-span-6 w-full">
               <div className="relative w-full h-[300px] sm:h-[400px] lg:h-[430px] rounded-[2rem] overflow-hidden border border-line bg-canvas/80 shadow-xl">
                 <AnimatePresence mode="wait">
@@ -265,7 +262,6 @@ export default function Home() {
                   <span className="text-xs font-bold text-ink">Hot Trend 2026 🔥</span>
                 </motion.div>
 
-                {/* Slide Indicators */}
                 <div className="absolute bottom-4 right-4 z-20 flex items-center gap-1.5 bg-black/25 backdrop-blur-sm px-2.5 py-1.5 rounded-full">
                   {heroShoppingModels.map((_, idx) => (
                     <button
@@ -324,7 +320,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Flash Deals Section (sirf tab dikhta hai jab koi sale chal rahi ho) */}
+      {/* Flash Deals Section */}
       {!loading && flashDeals.length > 0 && (
         <section id="flash-deals" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div
@@ -360,7 +356,7 @@ export default function Home() {
                     <span className="absolute top-5 left-5 z-10 bg-pop text-ink text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-md">
                       -{dealPercent}%
                     </span>
-                    <div className="w-full h-36 sm:h-44 bg-canvas border border-line rounded-2xl overflow-hidden flex items-center justify-center p-2 mb-3">
+                    <div className="w-full aspect-[4/3] bg-canvas border border-line rounded-2xl overflow-hidden flex items-center justify-center p-2.5 mb-3">
                       {dealGallery.length > 0 ? (
                         <ProductCardImageSlider
                           images={dealGallery}
@@ -494,7 +490,7 @@ export default function Home() {
                   <div>
                     <div
                       onClick={() => primaryImageUrl && setSelectedImage(primaryImageUrl)}
-                      className="w-full h-56 bg-canvas border border-line rounded-2xl overflow-hidden mb-4 flex items-center justify-center p-3 relative cursor-pointer group/img"
+                      className="w-full h-52 sm:h-56 bg-canvas border border-line rounded-2xl overflow-hidden mb-4 flex items-center justify-center p-3 relative cursor-pointer group/img"
                     >
                       {gallery.length > 0 ? (
                         <>
